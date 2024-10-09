@@ -1,0 +1,402 @@
+[
+{
+  "model": "shop.productsize",
+  "pk": 1,
+  "fields": {
+    "title": "Полуторный (2 pcs)",
+    "category": 1,
+    "description": "Размер постельного белья — Полуторный (2 pcs)",
+    "logo": "product_sizes/polutorka.png"
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 2,
+  "fields": {
+    "title": "Полуторный (3 pcs)",
+    "category": 1,
+    "description": "Размер постельного белья — Полуторный (3 pcs)",
+    "logo": "product_sizes/polutorka_uA7v6vt.png"
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 3,
+  "fields": {
+    "title": "Полуторный (4 pcs)",
+    "category": 1,
+    "description": "Размер постельного белья — Полуторный (4 pcs)",
+    "logo": "product_sizes/polutorka_MmWf0aR.png"
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 4,
+  "fields": {
+    "title": "Двуспальный Евро (6 pcs)",
+    "category": 1,
+    "description": "Размер постельного белья — Двуспальный Евро (6 pcs)",
+    "logo": "product_sizes/dvuhspalnaya.png"
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 5,
+  "fields": {
+    "title": "Двуспальный Евро (7 pcs)",
+    "category": 1,
+    "description": "Размер постельного белья — Двуспальный Евро (7 pcs)",
+    "logo": "product_sizes/dvuhspalnaya_3xgq7hd.png"
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 6,
+  "fields": {
+    "title": "Двуспальный Евро (8 pcs)",
+    "category": 1,
+    "description": "Размер постельного белья — Двуспальный Евро (8 pcs)",
+    "logo": "product_sizes/dvuhspalnaya_AvAmCAt.png"
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 7,
+  "fields": {
+    "title": "Семейный Дуэт (7 pcs)",
+    "category": 1,
+    "description": "Размер постельного белья — Семейный Дуэт (7 pcs)",
+    "logo": "product_sizes/semeymaya.png"
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 8,
+  "fields": {
+    "title": "Семейный Дуэт (8 pcs)",
+    "category": 1,
+    "description": "Размер постельного белья — Семейный Дуэт (8 pcs)",
+    "logo": "product_sizes/semeymaya_W31IkuC.png"
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 9,
+  "fields": {
+    "title": "Семейный Дуэт (9 pcs)",
+    "category": 1,
+    "description": "Размер постельного белья — Семейный Дуэт (9 pcs)",
+    "logo": "product_sizes/semeymaya_QNX4JWr.png"
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 10,
+  "fields": {
+    "title": "200x220",
+    "category": 3,
+    "description": "Размер простыни — 200x220",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 11,
+  "fields": {
+    "title": "250x245",
+    "category": 3,
+    "description": "Размер простыни — 250x245",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 12,
+  "fields": {
+    "title": "90x200x20",
+    "category": 4,
+    "description": "Размер простыни — 90x200x20",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 13,
+  "fields": {
+    "title": "140x200x20",
+    "category": 4,
+    "description": "Размер простыни — 140x200x20",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 14,
+  "fields": {
+    "title": "160x200x20",
+    "category": 4,
+    "description": "Размер простыни — 160x200x20",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 15,
+  "fields": {
+    "title": "180x200x20",
+    "category": 4,
+    "description": "Размер простыни — 180x200x20",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 16,
+  "fields": {
+    "title": "200x200x30",
+    "category": 4,
+    "description": "Размер простыни — 200x200x30",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 17,
+  "fields": {
+    "title": "180x200x30",
+    "category": 4,
+    "description": "Размер простыни — 180x200x30",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 18,
+  "fields": {
+    "title": "160x200x30",
+    "category": 4,
+    "description": "Размер простыни — 160x200x30",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 19,
+  "fields": {
+    "title": "140x200x30",
+    "category": 4,
+    "description": "Размер простыни — 140x200x30",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 20,
+  "fields": {
+    "title": "90x200x30",
+    "category": 4,
+    "description": "Размер простыни — 90x200x30",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 21,
+  "fields": {
+    "title": "80x200x30",
+    "category": 4,
+    "description": "Размер простыни — 80x200x30",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 22,
+  "fields": {
+    "title": "120x200x30",
+    "category": 4,
+    "description": "Размер простыни — 120x200x30",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 23,
+  "fields": {
+    "title": "18x50 (валик)",
+    "category": 5,
+    "description": "Размер наволочки — 18x50 (валик)",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 24,
+  "fields": {
+    "title": "30x40",
+    "category": 5,
+    "description": "Размер наволочки — 30x40",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 25,
+  "fields": {
+    "title": "40x40",
+    "category": 5,
+    "description": "Размер наволочки — 40x40",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 26,
+  "fields": {
+    "title": "50x70",
+    "category": 5,
+    "description": "Размер наволочки — 50x70",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 27,
+  "fields": {
+    "title": "70x70",
+    "category": 5,
+    "description": "Размер наволочки — 70x70",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 28,
+  "fields": {
+    "title": "150x210",
+    "category": 6,
+    "description": "Размер пододеяльника — 150x210",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 29,
+  "fields": {
+    "title": "200x220",
+    "category": 6,
+    "description": "Размер пододеяльника — 200x220",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 30,
+  "fields": {
+    "title": "90x160",
+    "category": 9,
+    "description": "Размер полотенца — 90x160",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 31,
+  "fields": {
+    "title": "30x50",
+    "category": 8,
+    "description": "Размер полотенца — 30x50",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 32,
+  "fields": {
+    "title": "48x90",
+    "category": 8,
+    "description": "Размер полотенца — 48x90",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 33,
+  "fields": {
+    "title": "50x70",
+    "category": 8,
+    "description": "Размер полотенца — 50x70",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 34,
+  "fields": {
+    "title": "50x100",
+    "category": 8,
+    "description": "Размер полотенца — 50x100",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 35,
+  "fields": {
+    "title": "70x127",
+    "category": 8,
+    "description": "Размер полотенца — 70x127",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 36,
+  "fields": {
+    "title": "70x140",
+    "category": 8,
+    "description": "Размер полотенца — 70x140",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 37,
+  "fields": {
+    "title": "Набор",
+    "category": 8,
+    "description": "Размер полотенца — Набор",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 38,
+  "fields": {
+    "title": "50x70, 50x100, 70x140",
+    "category": 8,
+    "description": "Размер полотенца — 50x70, 50x100, 70x140",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 39,
+  "fields": {
+    "title": "90x90",
+    "category": 10,
+    "description": "Размер детского уголка — 90x90",
+    "logo": ""
+  }
+},
+{
+  "model": "shop.productsize",
+  "pk": 40,
+  "fields": {
+    "title": "240x240",
+    "category": 11,
+    "description": "Размер покрывала — 240x240",
+    "logo": ""
+  }
+}
+]

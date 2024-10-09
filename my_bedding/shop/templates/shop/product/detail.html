@@ -1,0 +1,310 @@
+{% extends 'shop/base.html' %}{% load shop_tags_filters %}
+
+{% block content %}
+	{#	<p>Артикул: {{ product.article }}</p>#}
+	{#	<p>Описание: {{ product.description }}</p>#}
+	{#	<p>Создан: {{ product.created }}</p>#}
+	{#	<p>Последнее обновление: {{ product.updated }}</p>#}
+	<div class="container product-detail-view-container">
+		<div class="product-detail-view-left-block">
+			<div class="carousel">
+				<div class="thumbnails-wrapper">
+					<button type="button" id="thumbnail-up">
+						<img src="https://img.icons8.com/?size=100&id=39941&format=png&color=000000" alt="">
+					</button>
+					<ul class="thumbnail-list">
+						{% with product.product_images|image_size:"100x100" as images %}
+							{% if images %}
+								{% for image in images %}
+									<li data-slide="{{ forloop.counter0 }}" class="thumb-item">
+										<img src="{{ image.image.url }}" alt="">
+									</li>
+								{% endfor %}
+							{% endif %}
+						{% endwith %}
+					</ul>
+					<button type="button" id="thumbnail-down">
+						<img src="https://img.icons8.com/?size=100&id=39942&format=png&color=000000" alt="">
+					</button>
+				</div>
+				<div class="slider-for pswp-gallery" id="my-gallery">
+					{% with product.product_images|image_size:"1000x1000" as images %}
+						{% if images %}
+							{% for image in images %}
+								<a href="{{ image.image.url }}" data-pswp-width="1100" data-pswp-height="1100" target="_blank">
+									<img src="{{ image.image.url }}" alt="" class="zoom-image">
+								</a>
+
+							{% endfor %}
+						{% endif %}
+					{% endwith %}
+				</div>
+			</div>
+			<!-- Вкладки характеристик -->
+			<div class="product-detail-information">
+				<nav>
+					<div class="nav nav-tabs" id="nav-tab" role="tablist">
+						<button class="nav-link active" id="nav-description-tab" data-bs-toggle="tab" data-bs-target="#nav-description" type="button" role="tab" aria-controls="nav-description" aria-selected="true">
+							О товаре
+						</button>
+						<button class="nav-link" id="nav-equipment-tab" data-bs-toggle="tab" data-bs-target="#nav-equipment" type="button" role="tab" aria-controls="nav-equipment" aria-selected="false">
+							Комплектация
+						</button>
+						<button class="nav-link" id="nav-characteristic-tab" data-bs-toggle="tab" data-bs-target="#nav-characteristic" type="button" role="tab" aria-controls="nav-characteristic" aria-selected="false">
+							Характеристики
+						</button>
+						<button class="nav-link" id="nav-how-buy-tab" data-bs-toggle="tab" data-bs-target="#nav-how-buy" type="button" role="tab" aria-controls="nav-how-buy" aria-selected="false">
+							Как купить
+						</button>
+						<button class="nav-link" id="nav-payment-tab" data-bs-toggle="tab" data-bs-target="#nav-payment" type="button" role="tab" aria-controls="nav-payment" aria-selected="false">
+							Оплата
+						</button>
+						<button class="nav-link" id="nav-delivery-tab" data-bs-toggle="tab" data-bs-target="#nav-delivery" type="button" role="tab" aria-controls="nav-delivery" aria-selected="false">
+							Доставка
+						</button>
+					</div>
+				</nav>
+				<div class="tab-content" id="nav-tabContent">
+					<div class="tab-pane fade show active" id="nav-description" role="tabpanel" aria-labelledby="nav-description-tab" tabindex="0">
+						<p><span>Описание</span><br>{{ product.description }}
+						</p>
+						<p><span>Уход</span><br>{{ product.care }}</p>
+					</div>
+					<div class="tab-pane fade" id="nav-equipment" role="tabpanel" aria-labelledby="nav-equipment-tab" tabindex="0">
+						<div class="product-detail-equipment">
+							{% spaceless %}
+								<ul id="product-detail-equipment">
+									{% for item in product.sizes_quantity_prices.first.equipment.splitlines %}
+										<li>{{ item }}</li>
+									{% endfor %}
+								</ul>
+							{% endspaceless %}
+
+							{#							<p id="product-detail-equipment">{{ product.sizes_quantity_prices.first.equipment }}</p>#}
+						</div>
+					</div>
+					<div class="tab-pane fade brief-characteristics" id="nav-characteristic" role="tabpanel" aria-labelledby="nav-characteristic-tab" tabindex="0">
+						{% with product.parameters as params %}
+							{% if params.color %}
+								<p class="product-detail-param">
+									<span class="label">Цвет —</span>
+									<span class="value">{{ params.get_color_display }}</span>
+								</p>
+							{% endif %}
+							{% if params.composition %}
+								<p class="product-detail-param">
+									<span class="label">Состав —</span>
+									<span class="value">{{ params.get_composition_display }}</span>
+								</p>
+							{% endif %}
+							{% if params.design %}
+								<p class="product-detail-param">
+									<span class="label">Дизайн —</span>
+									<span class="value">{{ params.get_design_display }}</span>
+								</p>
+							{% endif %}
+							{% if params.material %}
+								<p class="product-detail-param">
+									<span class="label">Материал —</span>
+									<span class="value">{{ params.get_material_display }}</span>
+								</p>
+							{% endif %}
+							{% if params.density %}
+								<p class="product-detail-param">
+									<span class="label">Плотность —</span>
+									<span class="value">{{ params.get_density_display }}</span>
+								</p>
+							{% endif %}
+							{% if params.washing_mode %}
+								<p class="product-detail-param">
+									<span class="label">Режим стирки —</span>
+									<span class="value">{{ params.get_washing_mode_display }}</span>
+								</p>
+							{% endif %}
+							{% if params.type_of_sheet %}
+								<p class="product-detail-param">
+									<span class="label">Вид простыни —</span>
+									<span class="value">{{ params.get_type_of_sheet_display }}</span>
+								</p>
+							{% endif %}
+							{% if params.presence_of_embroidery %}
+								<p class="product-detail-param">
+									<span class="label">Наличие вышивки —</span>
+									<span class="value">{{ params.get_presence_of_embroidery_display }}</span>
+								</p>
+							{% endif %}
+							{% if params.filler %}
+								<p class="product-detail-param">
+									<span class="label">Наполнитель —</span>
+									<span class="value">{{ params.get_filler_display }}</span>
+								</p>
+							{% endif %}
+						{% endwith %}
+					</div>
+					<div class="tab-pane fade" id="nav-how-buy" role="tabpanel" aria-labelledby="nav-how-buy-tab" tabindex="0">
+						<p>
+							Для покупки товара в нашем интернет-магазине выберите понравившийся товар и добавьте его в корзину. Далее перейдите в Корзину и нажмите на «Оформить заказ» или «Быстрый заказ».<br><br> Когда оформляете быстрый заказ, напишите ФИО, телефон и e-mail. Вам перезвонит менеджер и уточнит условия заказа. По результатам разговора вам придет подтверждение оформления товара на почту или через СМС. Теперь останется только ждать доставки и радоваться новой покупке.
+							<br><br> Оформление заказа в стандартном режиме выглядит следующим образом. Заполняете полностью форму по последовательным этапам: адрес, способ доставки, оплаты, данные о себе. Советуем в комментарии к заказу написать информацию, которая поможет курьеру вас найти. Нажмите кнопку «Оформить заказ».
+						</p>
+					</div>
+					<div class="tab-pane fade" id="nav-payment" role="tabpanel" aria-labelledby="nav-payment-tab" tabindex="0">
+						<ol>Оплачивайте покупки удобным способом. В интернет-магазине доступно 3 варианта оплаты:
+							<li>
+								Оплата наличными при доставке курьером. Специалист свяжется с вами в день доставки, чтобы уточнить время и заранее подготовить сдачу с любой купюры. Вы подписываете товаросопроводительные документы, вносите денежные средства, получаете товар и чек.
+							</li>
+							<li>
+								Онлайн оплата на сайте. При оформлении заказа в корзине вы можете выбрать вариант онлайн оплаты. Мы принимаем карты МИР, Visa и Master Card, Maestro. Чтобы оплатить покупку, перейдите по ссылке «оплатить заказ» и вас перенаправит на сервер системы ЮКасса, где вы должны ввести номер карты, срок действия, имя держателя
+							</li>
+							<li>
+								Оплата банковской картой. Безналичным расчётом можно воспользоваться при курьерской доставке в регионах: Московская область, Ростовская область, Ленинградская область, Краснодар, Воронеж, Майкоп, Волгорад, Нижний Новгород, Тверь, Сочи, Анапа, Туапсе, Казань.<br>Мы принимаем карты МИР, Visa, Master Card и Maestro.
+							</li>
+						</ol>
+					</div>
+					<div class="tab-pane fade" id="nav-delivery" role="tabpanel" aria-labelledby="nav-delivery-tab" tabindex="0">
+						Экономьте время на получении заказа. В интернет-магазине доступно 5 вариантов доставки:
+						<ul>Наш интернет-магазин предлагает несколько вариантов доставки:
+							<li>
+								курьерская, транспортной компанией;
+							</li>
+							<li>
+								транспортной компанией до пункта выдачи;
+							</li>
+							<li>
+								самовывоз из магазинов в городах Москва, Ростов-на-Дону, Волгодонск;
+							</li>
+							<li>
+								Express доставка (для заказов по Москве, в пределах МКАД);
+							</li>
+							<li>
+								почта России.
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="recommend-products">
+				<strong>Тут будут рекомендуемые товары</strong><br><br> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium assumenda consectetur consequatur cupiditate doloribus ea eaque ex facilis illo incidunt laudantium libero molestias nam nesciunt pariatur provident quaerat quasi quod ratione repudiandae sequi similique sint, soluta tempora totam unde velit voluptate voluptatem voluptatum! Accusantium aut dolorem dolorum enim laboriosam magnam maiores natus necessitatibus nemo nesciunt numquam possimus qui, repellat saepe sapiente. Accusamus, alias animi aperiam, asperiores aut consectetur dolor dolore est id minus sunt voluptate. Aliquam aspernatur deserunt dolor doloribus eaque eius esse illo, incidunt itaque laboriosam laborum, nulla numquam obcaecati quaerat quas quo quod quos ratione rerum sequi!
+			</div>
+		</div>
+		<div class="product-detail-view-right-block">
+			<div class="size-selection-and-information">
+				<div class="promotions-and-promo-codes">
+					<img src="https://img.icons8
+				.com/?size=100&id=31117&format=png&color=000000" alt="" class="promo-image">
+					<span class="promo-text">Тут будет скидка или промоакция</span>
+				</div>
+				<div class="product-detail-price">
+					{{ product.sizes_quantity_prices.first.price|format_price }} ₽
+				</div>
+				<div class="product-detail-description">
+					<p id="product-detail-description">
+						{{ product.sizes_quantity_prices.first.size.description }}
+					</p>
+				</div>
+				<!-- Блок кнопок размеров -->
+				<div class="list-product-detail-sizes">
+					{% with product.sizes_quantity_prices.all as product_sizes %}
+						{% for size in product_sizes %}
+							<button type="button" class="btn {% if forloop.first %}active{% endif %}" data-price="{{ size.price }}" data-description="{{ size.size.description }}" data-equipment="{{ size.equipment }}">
+								{% if size.size.logo %}
+									<img class="product-detail-sizes-logo" src="{{ size.size.logo.url }}" alt="">
+								{% endif %}
+							</button>
+						{% endfor %}
+					{% endwith %}
+				</div>
+				<!-- Таблица размеров -->
+				<div class="size-table">
+					<img src="https://img.icons8.com/?size=100&id=43718&format=png&color=000000" alt="">
+					<!-- Link trigger modal -->
+					<a href="#" data-bs-toggle="modal" data-bs-target="#size-table"> Таблица размеров </a>
+				</div>
+				<!-- Кнопки корзина и избранное -->
+				<div class="product-detail-links">
+					<button type="button" class="button-add-to-card">
+						Добавить в корзину
+					</button>
+					<button type="button" class="button-add-to-favorite">
+						<i class="fa-regular fa-heart"></i>
+					</button>
+				</div>
+			</div>
+			<!-- Краткие характеристики -->
+			<div class="brief-characteristics">
+				<p class="title-param">Характеристики:</p>
+				{% with product.parameters as params %}
+					{% if params.color %}
+						<p class="product-detail-param">
+							<span class="label">Цвет —</span>
+							<span class="value">{{ params.get_color_display }}</span>
+						</p>
+					{% endif %}
+					{% if params.composition %}
+						<p class="product-detail-param">
+							<span class="label">Состав —</span>
+							<span class="value">{{ params.get_composition_display }}</span>
+						</p>
+					{% endif %}
+					{% if params.design %}
+						<p class="product-detail-param">
+							<span class="label">Дизайн —</span>
+							<span class="value">{{ params.get_design_display }}</span>
+						</p>
+					{% endif %}
+					{% if params.material %}
+						<p class="product-detail-param">
+							<span class="label">Материал —</span>
+							<span class="value">{{ params.get_material_display }}</span>
+						</p>
+					{% endif %}
+					{% if params.density %}
+						<p class="product-detail-param">
+							<span class="label">Плотность —</span>
+							<span class="value">{{ params.get_density_display }}</span>
+						</p>
+					{% endif %}
+					{% if params.washing_mode %}
+						<p class="product-detail-param">
+							<span class="label">Режим стирки —</span>
+							<span class="value">{{ params.get_washing_mode_display }}</span>
+						</p>
+					{% endif %}
+					{% if params.type_of_sheet %}
+						<p class="product-detail-param">
+							<span class="label">Вид простыни —</span>
+							<span class="value">{{ params.get_type_of_sheet_display }}</span>
+						</p>
+					{% endif %}
+					{% if params.presence_of_embroidery %}
+						<p class="product-detail-param">
+							<span class="label">Наличие вышивки —</span>
+							<span class="value">{{ params.get_presence_of_embroidery_display }}</span>
+						</p>
+					{% endif %}
+					{% if params.filler %}
+						<p class="product-detail-param">
+							<span class="label">Наполнитель —</span>
+							<span class="value">{{ params.get_filler_display }}</span>
+						</p>
+					{% endif %}
+				{% endwith %}
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="size-table" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="size-tableLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					{% include 'shop/product/size_table.html' %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

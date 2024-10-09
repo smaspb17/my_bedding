@@ -1,0 +1,58 @@
+[
+{
+  "model": "users.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$gCjBm8W69thnw95qlYUeRx$sOqZFXMYN672XvKV9MTZeMGMWaR4aF2DNhZ2EXTilfQ=",
+    "last_login": "2024-09-21T15:54:38.488Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "Марат",
+    "last_name": "Шайбаков",
+    "email": "kamarik777@mail.ru",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-08-06T11:56:16.674Z",
+    "phone_number": null,
+    "address": "г. Санкт-Петербург, Пискарёвский проспект, д. 25, корп. 2, стр. 1, кв. 1579",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$bmVmvRDe7z5zFks1URQHXq$jIRl9EY/W1WtUi8GBM5RqYc3xWErxcn+ncqNw//ue2A=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "venera",
+    "first_name": "Венера",
+    "last_name": "Хатыпова",
+    "email": "fkass@yandex.ru",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-08-06T12:11:09.694Z",
+    "phone_number": null,
+    "address": "г.Уфа, пер. Челябинский, д. 10",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.profile",
+  "pk": 1,
+  "fields": {
+    "photo": "media/users/Изображение_WhatsApp_2024-03-10_в_09.57.10_62cd5615_xgNmLIn.jpg",
+    "telegram_id": "@marat_shaibakov"
+  }
+},
+{
+  "model": "users.profile",
+  "pk": 2,
+  "fields": {
+    "photo": "media/users/кот_QaPz6T2.jpg",
+    "telegram_id": null
+  }
+}
+]
