@@ -1,0 +1,182 @@
+[
+{
+  "model": "shop.category",
+  "pk": 1,
+  "fields": {
+    "parent": null,
+    "title": "Комплекты постельного белья",
+    "slug": "komplekty-postelnogo-belya",
+    "description": "",
+    "logo": "categories/complekti_post_belya.png",
+    "lft": 1,
+    "rght": 2,
+    "tree_id": 1,
+    "level": 0
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 2,
+  "fields": {
+    "parent": null,
+    "title": "Простыни",
+    "slug": "prostyni",
+    "description": "",
+    "logo": "categories/prostyni.png",
+    "lft": 1,
+    "rght": 6,
+    "tree_id": 2,
+    "level": 0
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 3,
+  "fields": {
+    "parent": 2,
+    "title": "Простыни без резинки",
+    "slug": "prostyni-bez-rezinki",
+    "description": "",
+    "logo": "",
+    "lft": 2,
+    "rght": 3,
+    "tree_id": 2,
+    "level": 1
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 4,
+  "fields": {
+    "parent": 2,
+    "title": "Простыни с резинкой",
+    "slug": "prostyni-s-rezinkoj",
+    "description": "",
+    "logo": "",
+    "lft": 4,
+    "rght": 5,
+    "tree_id": 2,
+    "level": 1
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 5,
+  "fields": {
+    "parent": null,
+    "title": "Наволочки",
+    "slug": "navolochki",
+    "description": "",
+    "logo": "categories/navolochki.png",
+    "lft": 1,
+    "rght": 2,
+    "tree_id": 3,
+    "level": 0
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 6,
+  "fields": {
+    "parent": null,
+    "title": "Пододеяльники",
+    "slug": "pododeyalniki",
+    "description": "",
+    "logo": "categories/pododeyalniki.png",
+    "lft": 1,
+    "rght": 2,
+    "tree_id": 4,
+    "level": 0
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 7,
+  "fields": {
+    "parent": null,
+    "title": "Полотенца",
+    "slug": "polotenca",
+    "description": "",
+    "logo": "categories/polotenca.png",
+    "lft": 1,
+    "rght": 8,
+    "tree_id": 5,
+    "level": 0
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 8,
+  "fields": {
+    "parent": 7,
+    "title": "Махровые полотенца",
+    "slug": "mahrovye-polotenca",
+    "description": "",
+    "logo": "",
+    "lft": 6,
+    "rght": 7,
+    "tree_id": 5,
+    "level": 1
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 9,
+  "fields": {
+    "parent": 7,
+    "title": "Вафельные полотенца",
+    "slug": "vafelnye-polotenca",
+    "description": "",
+    "logo": "",
+    "lft": 2,
+    "rght": 3,
+    "tree_id": 5,
+    "level": 1
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 10,
+  "fields": {
+    "parent": 7,
+    "title": "Детские уголки",
+    "slug": "detskie-ugolki",
+    "description": "",
+    "logo": "",
+    "lft": 4,
+    "rght": 5,
+    "tree_id": 5,
+    "level": 1
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 11,
+  "fields": {
+    "parent": null,
+    "title": "Пледы и покрывала",
+    "slug": "pledy-i-pokryvala",
+    "description": "",
+    "logo": "categories/pledy-i-pokryvala.png",
+    "lft": 1,
+    "rght": 2,
+    "tree_id": 6,
+    "level": 0
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 12,
+  "fields": {
+    "parent": null,
+    "title": "Детям",
+    "slug": "detyam",
+    "description": "",
+    "logo": "categories/detyam.png",
+    "lft": 1,
+    "rght": 2,
+    "tree_id": 7,
+    "level": 0
+  }
+}
+]

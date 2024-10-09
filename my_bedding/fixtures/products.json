@@ -1,0 +1,170 @@
+[
+{
+  "model": "shop.product",
+  "pk": 1,
+  "fields": {
+    "category": 1,
+    "title": "Комплект постельного белья \"Пушинка супер\"",
+    "description": "Это супер комплект постельного белья",
+    "is_available": true,
+    "created": "2024-09-13T15:19:30.340Z",
+    "updated": "2024-09-25T19:19:21.470Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 2,
+  "fields": {
+    "category": 1,
+    "title": "Комплект постельного белья \"Облачко\"",
+    "description": "Это супер комплект постельного белья",
+    "is_available": true,
+    "created": "2024-08-06T15:45:52.347Z",
+    "updated": "2024-09-25T18:34:52.181Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 3,
+  "fields": {
+    "category": 1,
+    "title": "Комплект постельного белья \"Ангелочек\"",
+    "description": "Это супер комплект постельного белья",
+    "is_available": true,
+    "created": "2024-08-06T15:46:33.355Z",
+    "updated": "2024-08-31T10:46:58.412Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 4,
+  "fields": {
+    "category": 1,
+    "title": "Комплект постельного белья \"Пирожочек\"",
+    "description": "Это супер комплект постельного белья",
+    "is_available": true,
+    "created": "2024-08-06T15:47:06.164Z",
+    "updated": "2024-08-31T10:47:18.107Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 5,
+  "fields": {
+    "category": 1,
+    "title": "Комплект постельного белья \"Пушинка1\"",
+    "description": "Это супер комплект постельного белья",
+    "is_available": true,
+    "created": "2024-08-06T15:47:44.720Z",
+    "updated": "2024-08-31T10:47:09.909Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 6,
+  "fields": {
+    "category": 1,
+    "title": "Комплект постельного белья \"Пирожочек1\"",
+    "description": "Это супер комплект постельного белья",
+    "is_available": true,
+    "created": "2024-08-06T15:48:10.898Z",
+    "updated": "2024-08-31T10:47:22.217Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 7,
+  "fields": {
+    "category": 1,
+    "title": "Комплект постельного белья \"Ангелочек1\"",
+    "description": "Это супер комплект постельного белья",
+    "is_available": true,
+    "created": "2024-08-06T15:48:35.275Z",
+    "updated": "2024-08-31T10:47:26.446Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 8,
+  "fields": {
+    "category": 1,
+    "title": "Комплект постельного белья \"Облачко1\"",
+    "description": "Это супер комплект постельного белья",
+    "is_available": true,
+    "created": "2024-08-06T15:49:02.590Z",
+    "updated": "2024-08-31T10:47:33.798Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 9,
+  "fields": {
+    "category": 1,
+    "title": "Комплект постельного белья \"Пушинка2\"",
+    "description": "",
+    "is_available": true,
+    "created": "2024-08-06T15:49:24.882Z",
+    "updated": "2024-08-30T11:18:31.198Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 10,
+  "fields": {
+    "category": 1,
+    "title": "Комплект постельного белья \"Ангелочек2\"",
+    "description": "",
+    "is_available": true,
+    "created": "2024-08-06T15:49:48.409Z",
+    "updated": "2024-08-30T11:18:31.197Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 11,
+  "fields": {
+    "category": 1,
+    "title": "Комплект постельного белья \"Пушинка3\"",
+    "description": "",
+    "is_available": true,
+    "created": "2024-08-19T16:25:20.903Z",
+    "updated": "2024-08-30T11:18:31.196Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 12,
+  "fields": {
+    "category": 1,
+    "title": "Комплект постельного белья \"Облачко2\"",
+    "description": "",
+    "is_available": true,
+    "created": "2024-08-19T16:25:53.635Z",
+    "updated": "2024-08-30T11:18:31.191Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 13,
+  "fields": {
+    "category": 1,
+    "title": "Комплект постельного белья \"Пушинка супер плюс\"",
+    "description": "",
+    "is_available": true,
+    "created": "2024-09-13T15:19:30.340Z",
+    "updated": "2024-09-13T15:23:13.564Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 14,
+  "fields": {
+    "category": 6,
+    "title": "Тестовый",
+    "description": "",
+    "is_available": true,
+    "created": "2024-09-25T14:11:22.191Z",
+    "updated": "2024-09-25T19:21:21.711Z"
+  }
+}
+]

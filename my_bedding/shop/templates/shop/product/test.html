@@ -1,0 +1,28 @@
+{% extends 'shop/base.html' %}{% load static %}{% load shop_tags_filters %}
+
+{% block content %}
+	<div class="pswp-gallery" id="my-gallery">
+	    {% with product_1.product_images|image_size:"800x800" as images %}
+	        {% if images %}
+	            {% for image in images %}
+	                <a href="{{ image.image.url }}" data-pswp-width="800" data-pswp-height="800" target="_blank">
+	                    <img src="{{ image.image.url }}" alt="" class="zoom-image">
+	                </a>
+	            {% endfor %}
+	        {% endif %}
+	    {% endwith %}
+	</div>
+{% endblock %}
+{% block extra_js %}
+<script type="module">
+    import PhotoSwipeLightbox from 'https://unpkg.com/photoswipe/dist/photoswipe-lightbox.esm.js';
+
+    const lightbox = new PhotoSwipeLightbox({
+        gallery: '#my-gallery',
+        children: 'a',
+        pswpModule: () => import('https://unpkg.com/photoswipes'),
+    });
+
+    lightbox.init();
+</script>
+{% endblock %}
