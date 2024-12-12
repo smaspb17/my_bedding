@@ -74,13 +74,13 @@
 						<div class="product-detail-equipment">
 							{% spaceless %}
 								<ul id="product-detail-equipment">
-									{% for item in product.sizes_quantity_prices.first.equipment.splitlines %}
+									{% for item in product.articles.first.equipment.splitlines %}
 										<li>{{ item }}</li>
 									{% endfor %}
 								</ul>
 							{% endspaceless %}
 
-							{#							<p id="product-detail-equipment">{{ product.sizes_quantity_prices.first.equipment }}</p>#}
+							{#							<p id="product-detail-equipment">{{ product.articles.first.equipment }}</p>#}
 						</div>
 					</div>
 					<div class="tab-pane fade brief-characteristics" id="nav-characteristic" role="tabpanel" aria-labelledby="nav-characteristic-tab" tabindex="0">
@@ -195,18 +195,24 @@
 					<span class="promo-text">Тут будет скидка или промоакция</span>
 				</div>
 				<div class="product-detail-price">
-					{{ product.sizes_quantity_prices.first.price|format_price }} ₽
+					{{ product.articles.first.price|format_price }} ₽
 				</div>
 				<div class="product-detail-description">
 					<p id="product-detail-description">
-						{{ product.sizes_quantity_prices.first.size.description }}
+						{{ product.articles.first.size.description }}
 					</p>
 				</div>
 				<!-- Блок кнопок размеров -->
 				<div class="list-product-detail-sizes">
-					{% with product.sizes_quantity_prices.all as product_sizes %}
+					{% with product.articles.all as product_sizes %}
 						{% for size in product_sizes %}
-							<button type="button" class="btn {% if forloop.first %}active{% endif %}" data-price="{{ size.price }}" data-description="{{ size.size.description }}" data-equipment="{{ size.equipment }}">
+							<button type="button"
+								class="btn {% if forloop.first %}active{% endif %}"
+								data-price="{{ size.price }}"
+								data-description="{{ size.size.description }}"
+								data-equipment="{{ size.equipment }}"
+								data-article="{{ size.article }}"
+								data-in-cart="{% if size.article|stringformat:'s' in cart %}true{% else %}false{% endif %}">
 								{% if size.size.logo %}
 									<img class="product-detail-sizes-logo" src="{{ size.size.logo.url }}" alt="">
 								{% endif %}
@@ -218,16 +224,52 @@
 				<div class="size-table">
 					<img src="https://img.icons8.com/?size=100&id=43718&format=png&color=000000" alt="">
 					<!-- Link trigger modal -->
-					<a href="#" data-bs-toggle="modal" data-bs-target="#size-table"> Таблица размеров </a>
+					<a href="#" data-bs-toggle="modal" data-bs-target="#size-table">Таблица размеров</a>
 				</div>
 				<!-- Кнопки корзина и избранное -->
 				<div class="product-detail-links">
-					<button type="button" class="button-add-to-card">
-						Добавить в корзину
-					</button>
-					<button type="button" class="button-add-to-favorite">
-						<i class="fa-regular fa-heart"></i>
-					</button>
+					{% if product.articles.first %}
+						<div class="product-detail-cart-add-container">
+{#							{% if product.articles.first.article|stringformat:'s' in cart %}#}
+{#								<button type="button" onclick="window.location.href='{% url 'cart:cart-detail' %}'" class="button-link">#}
+{#								    Перейти в корзину#}
+{#								</button>#}
+{#							{% else %}#}
+{#								<!-- Форма для добавления в корзину -->#}
+{#								<form#}
+{#							        id="add-to-cart-form2-{{ product.articles.first.article }}"#}
+{#							        action="{% url 'cart:cart-add' product.articles.first.article %}"#}
+{#							        method="post"#}
+{#							        class="add-to-cart-form2"#}
+{#							    >#}
+{#							        {% csrf_token %}#}
+{#							        <button type="submit" class="button-add-to-card">#}
+{#							            Добавить в корзину#}
+{#							        </button>#}
+{#							    </form>#}
+{#							{% endif %}#}
+						</div>
+						<div class="product-detail-favorite-add-container">
+							<!-- Форма избранного остаётся без изменений -->
+							<form hx-post="" hx-trigger="click" hx-swap="none" method="post" class="add-to-favorite-form">
+								{% csrf_token %}
+								<button type="submit" class="button-add-to-favorite">
+									<img src="https://img.icons8.com/?size=27&id=z3ZIkrQcnQdK&format=png&color=545454" alt="Избранное">
+								</button>
+							</form>
+{#							<button type="button" class="button-add-to-favorite">#}
+{#								<img src="https://img.icons8.com/?size=27&id=z3ZIkrQcnQdK&format=png&color=545454" alt="">#}
+{#							</button>#}
+						</div>
+					{% else %}
+{#						<button type="submit" class="button-add-to-card">#}
+{#							Добавить в корзину#}
+{#						</button>#}
+{#						<button type="button" class="button-add-to-favorite">#}
+{#							<img src="https://img.icons8.com/?size=27&id=z3ZIkrQcnQdK&format=png&color=545454" alt="">#}
+{#						</button>#}
+					{% endif %}
+
 				</div>
 			</div>
 			<!-- Краткие характеристики -->

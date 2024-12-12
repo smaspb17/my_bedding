@@ -1,13 +1,12 @@
+
 <!-- product/list.html -->
-{% extends 'shop/base.html' %}
-{% load shop_tags_filters %}
-{% load static %}
+{% extends 'shop/base.html' %}{% load shop_tags_filters %}{% load static %}
 
 {% block content %}
 
-{#	{% if category %}#}
-{#		<h1>Категория: {{ category.title }}</h1>#}
-{#	{% endif %}#}
+	{#	{% if category %}#}
+	{#		<h1>Категория: {{ category.title }}</h1>#}
+	{#	{% endif %}#}
 
 	{% if products %}
 		<section class="main-content">
@@ -16,21 +15,17 @@
 					{% for p in products %}
 
 						<div class="card-container col-lg-3 col-sm-6 mb-3 m-0 p-0">
-							<div class="card product-card">
+							<div class="card product-card" data-product-id="{{ p.id }}">
 								<div class="product-image">
 									<div class="product-images-slider">
 										{% with p.product_images|image_size:"450x450" as images %}
 											{% if images %}
 												{% for image in images %}
-													<a href="{% url 'shop:product_detail' p.category.slug p.id  %}"><img
-														class="card-img-top"
-														src="{{ image.image.url }}" alt="">
+													<a href="{% url 'shop:product_detail' p.category.slug p.id %}"><img class="card-img-top" src="{{ image.image.url }}" alt="">
 													</a>
 												{% endfor %}
 											{% else %}
-												<a href="{% url 'shop:product_detail' p.category.slug p.id  %}"><img class="card-img-top"
-													src="{% static 'site/default-product.jpg' %}"
-													alt="Нет картинки">
+												<a href="{% url 'shop:product_detail' p.category.slug p.id %}"><img class="card-img-top" src="{% static 'site/default-product.jpg' %}" alt="Нет картинки">
 												</a>
 											{% endif %}
 										{% endwith %}
@@ -38,16 +33,86 @@
 								</div>
 								<div class="card-body product-details">
 									<h4 class="card-title">
-										<a href="{% url 'shop:product_detail' p.category.slug p.id  %}">{{ p.title }}</a></h4>
-									<div class="product-bottom-details d-flex
-									justify-content-between">
+										<a href="{% url 'shop:product_detail' p.category.slug p.id %}">{{ p.title }}</a>
+									</h4>
+									<div class="product-bottom-details">
 										<div class="product-price">
-											{{ p.sizes_quantity_prices.first.price|format_price }} ₽
+											{{ p.articles.first.price|format_price }} ₽
 										</div>
 										<div class="product-links">
-											<a href="{% y %}"><i
-												class="fa-solid fa-cart-shopping"></i></a>
-											<a href="#"><i class="fa-regular fa-heart"></i></a>
+
+											<!-- Здесь форма для добавления в корзину будет динамически обновляться через JS -->
+											{% if p.articles.first %}
+												<div class="product-list-cart-add-container">
+{#													{% if p.articles.first.article|stringformat:'s' in cart %}#}
+{#														<a href="{% url 'cart:cart-detail' %}" class="add-to-cart-btn" style="border: none; background: none; padding: 0;">#}
+{#														    <img#}
+{#														        id="cart-icon-{{ article }}"#}
+{#														        src="https://img.icons8.com/?size=27&id=A2wGxDEI4NRh&format=png&color=D8BB76"#}
+{#														        alt="Добавлено в корзину"#}
+{#														        class="cart-icon added"#}
+{#														    >#}
+{#														</a>#}
+{#													{% else %}#}
+{#														<!-- Форма для добавления в корзину -->#}
+{#														<!-- Форма для добавления в корзину -->#}
+{#													    <form#}
+{#													        id="add-to-cart-form-{{ p.articles.first.article }}"#}
+{#													        action="{% url 'cart:cart-add' p.articles.first.article %}"#}
+{#													        method="post"#}
+{#													        class="add-to-cart-form"#}
+{#													    >#}
+{#													        {% csrf_token %}#}
+{#													        <button type="submit" class="add-to-cart-btn" style="border: none; background: none; padding: 0; position: relative;">#}
+{#													            <img#}
+{#													                id="cart-icon-default-{{ p.articles.first.article }}"#}
+{#													                src="https://img.icons8.com/?size=27&id=p3rkypXU5nhr&format=png&color=555555"#}
+{#													                alt="Добавить в корзину"#}
+{#													                class="cart-icon default"#}
+{#													            >#}
+{#													        </button>#}
+{#													    </form>#}
+{##}
+	{#												    <form#}
+	{#													    id="add-to-cart-form-{{ p.articles.first.article }}"#}
+	{#													    data-original-hx-post="{% url 'cart:cart-add' p.articles.first.article %}"#}
+	{#													    hx-post="{% url 'cart:cart-add' p.articles.first.article %}"#}
+	{#													    hx-trigger="click"#}
+	{#													    hx-swap="outerHTML"#}
+	{#													    hx-target="#add-to-cart-form-{{ p.articles.first.article }}"#}
+	{#													    method="post"#}
+	{#													    class="add-to-cart-form"#}
+	{#													>#}
+	{#													    {% csrf_token %}#}
+	{#													    <button type="submit" class="add-to-cart-btn" style="border: none; background: none; padding: 0; position: relative;">#}
+	{#													        <img#}
+	{#													            id="cart-icon-default-{{ p.articles.first.article }}"#}
+	{#													            src="https://img.icons8.com/?size=27&id=p3rkypXU5nhr&format=png&color=555555"#}
+	{#													            alt="Добавить в корзину"#}
+	{#													            class="cart-icon default"#}
+	{#													        >#}
+	{#													    </button>#}
+	{#													</form>#}
+{#													{% endif %}#}
+												</div>
+
+												<div class="product-list-favorite-add-container">
+													<!-- Форма избранного остаётся без изменений -->
+													<form hx-post="" hx-trigger="click" hx-swap="none" method="post" class="add-to-favorite-form">
+														{% csrf_token %}
+														<button type="submit" class="add-to-favorite-btn">
+															<img src="https://img.icons8.com/?size=27&id=z3ZIkrQcnQdK&format=png&color=555555" alt="Избранное">
+														</button>
+													</form>
+												</div>
+											{% else %}
+{#												<a href="#" class="icons-not-article">#}
+{#													<img src="https://img.icons8.com/?size=27&id=p3rkypXU5nhr&format=png&color=555555" alt="">#}
+{#												</a>#}
+{#												<a href="#" class="icons-not-article">#}
+{#													<img src="https://img.icons8.com/?size=27&id=z3ZIkrQcnQdK&format=png&color=555555" alt="">#}
+{#												</a>#}
+											{% endif %}
 										</div>
 									</div>
 								</div>
@@ -56,22 +121,27 @@
 									<div class="card-extra-content-product-sizes">
 										<!-- Контейнер для цены и описания -->
 										<div class="product-description">
-											<p id="product-description">{{ p.sizes_quantity_prices.first.size.description }}</p>
+											<p id="product-description">
+												{{ p.articles.first.size.description }}</p>
 										</div>
 										<!-- Блок кнопок размеров -->
 										<div class="list-product-sizes">
-											{% with p.sizes_quantity_prices.all as product_sizes %}
-												{% for size in product_sizes %}
-													<button type="button" class="btn {% if forloop.first %}active{% endif %}"
-														data-price="{{ size.price }}"
-														data-description="{{ size.size.description }}">
-														{% if size.size.logo %}
-															<img class="product-sizes-logo" src="{{ size.size.logo.url }}" alt="">
+											{% with p.articles.all as product_articles %}
+												{% for article in product_articles %}
+													<button
+														type="button"
+														class="btn {% if forloop.first %}active{% endif %}"
+														data-price="{{ article.price }}"
+														data-description="{{ article.size.description }}"
+														data-article="{{ article.article }}"
+														data-in-cart="{% if article.article|stringformat:'s' in cart %}true{% else %}false{% endif %}">
+														{% if article.size.logo %}
+															<img class="product-sizes-logo" src="{{ article.size.logo.url }}" alt="">
 														{% endif %}
 													</button>
 												{% endfor %}
 											{% endwith %}
-									    </div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -83,9 +153,7 @@
 		</section>
 
 	{% else %}
-		<h1>Уважаемый покупатель! В данной категории нет товаров, но скоро они
-			появятся в продаже! Мы обязательно сообщим вам об этом!
-			Возвращайтесь к нам снова!</h1>
+		<h1>Уважаемый покупатель! В данной категории нет товаров, но скоро они появятся в продаже! Мы обязательно сообщим вам об этом! Возвращайтесь к нам снова!</h1>
 	{% endif %}
 
 {% endblock %}

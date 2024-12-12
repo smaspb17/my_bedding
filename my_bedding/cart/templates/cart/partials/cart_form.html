@@ -1,0 +1,45 @@
+<!-- cart_form.html -->
+
+{#<form#}
+{#    id="add-to-cart-form-{{ article }}"#}
+{#    method="post"#}
+{#    class="add-to-cart-form"#}
+{#    data-article="{{ article }}"#}
+{#>#}
+{#    {% csrf_token %}#}
+{#    <button type="submit" class="add-to-cart-btn" style="border: none; background: none; padding: 0; position: relative;">#}
+{#        <!-- Серый значок по умолчанию -->#}
+{#        <img#}
+{#            id="cart-icon-default-{{ article }}"#}
+{#            src="https://img.icons8.com/?size=27&id=p3rkypXU5nhr&format=png&color=555555"#}
+{#            alt="Добавить в корзину"#}
+{#            class="cart-icon default">#}
+{#    </button>#}
+{#</form>#}
+
+
+
+<!-- cart_form.html -->
+<form
+    id="add-to-cart-form-{{ article }}"
+	data-original-hx-post="{% url 'cart:cart-add' article %}"
+    hx-post="{% url 'cart:cart-add' article %}"
+    hx-trigger="click"
+    hx-swap="outerHTML"
+    hx-target="#add-to-cart-form-{{ article }}"
+{#	hx-target="#add-to-cart-form-container"#}
+    method="post"
+    class="add-to-cart-form"
+>
+    {% csrf_token %}
+    <button type="submit" class="add-to-cart-btn" style="border: none; background: none; padding: 0; position: relative;">
+        <!-- Серый значок по умолчанию -->
+        <img
+            id="cart-icon-default-{{ article }}"
+            src="https://img.icons8.com/?size=27&id=p3rkypXU5nhr&format=png&color=555555"
+            alt="Добавить в корзину"
+            class="cart-icon default">
+    </button>
+</form>
+
+
