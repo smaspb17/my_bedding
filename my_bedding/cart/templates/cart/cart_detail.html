@@ -1,0 +1,138 @@
+{% extends 'shop/base.html' %}{% load shop_tags_filters %}
+
+{% block content %}
+	<div class="container cart-container">
+		<div class="cart-left-container">
+			{% if cart.cart|length > 0 %}
+				<table class="table table-bordered cart-table caption-top">
+					<tbody>
+					{% for item in cart %}
+						{% with article=item.article product=item.product %}
+							<tr id="cart-remove-{{ article.article }}" class="cart-table-tr">
+								<td class="cart-table-td">
+									{% with product.product_images|image_size:"450x450" as images %}
+										<a href="{% url 'shop:product_detail' product.category.slug product.id %}">
+											<img src="{{ images.first.image.url }}" alt="" height="110" width="110"> </a>
+									{% endwith %}
+								</td>
+								<td class="cart-table-td">
+									<a href="{% url 'shop:product_detail' product.category.slug product.id %}" class="cart-title">
+										<p class="cart-title">{{ product.title }}</p>
+									</a>
+									<table class="cart-table-params">
+										<tr class="cart-params">
+											<td class="cart-params-key">Артикул</td>
+											<td class="cart-params-value">{{ article.article }}</td>
+										</tr>
+										<tr class="cart-params">
+											<td class="cart-params-key">Размер</td>
+											<td class="cart-params-value">{{ article.size.title }}</td>
+										</tr>
+									</table>
+									<div class="accordion" id="accordionExample-{{ article.article }}">
+										<div class="accordion-item cart-params">
+											<p class="accordion-header">
+												<button class="accordion-button collapsed cart-params-key" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne-{{ article.article }}" aria-expanded="false" aria-controls="collapseOne-{{ article.article }}">
+													Комплектация
+												</button>
+											</p>
+											<div id="collapseOne-{{ article.article }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample-{{ article.article }}">
+												<div class="accordion-body cart-params-value">
+													<hr>
+													{{ article.equipment|linebreaksbr }}
+												</div>
+											</div>
+										</div>
+									</div>
+								</td>
+								<td class="cart-table-td cart-table-price">
+									<div class="cart-item-wrapper">
+										<p class="cart-table-items">
+											{{ item.price|format_price }} ₽ </p>
+										<p class="cart-table-items cart-table-label">
+											цена </p>
+									</div>
+								</td>
+								<td class="cart-table-td">
+									<div class="cart-item-wrapper">
+										<div class="quantity-control cart-table-items">
+											<button
+												class="btn btn-minus" data-article="{{ article.article }}" type="button">−</button>
+											{#<!-- Поле для ввода и отображения количества -->#}
+											<input type="number" class="quantity-input" data-article="{{ article.article }}" value="{{ item.quantity }}" min="1" max="{{ article.quantity }}">
+											<button class="btn btn-plus" data-article="{{ article.article }}" type="button">+</button>
+										</div>
+										<p class="cart-table-items cart-table-label">
+											количество </p>
+									</div>
+								</td>
+								<td class="cart-table-td">
+									<div class="cart-item-wrapper">
+										<p class="cart-table-items" data-article="{{ article.article }}" data-price="{{ item.price }}">
+											{{ item.total_price|format_price }} ₽ </p>
+										<p class="cart-table-items cart-table-label">
+											стоимость </p>
+									</div>
+								</td>
+								<td class="cart-table-td cart-detail-links">
+									<ul class="cart-detail-links-ul">
+										<li>
+											<form hx-post=""
+												hx-trigger="click"
+												hx-swap="none"
+												method="post"
+												class="add-to-favorite-form">
+												{% csrf_token %}
+												<button class="add-to-favorite-btn" type="submit" style="border: none; background: none; padding: 0">
+													<img src="https://img.icons8.com/?size=23&id=87&format=png&color=8F9999FF" alt="Избранное">
+												</button>
+											</form>
+										</li>
+										<li>
+	{#										<form#}
+	{#											hx-post="{% url 'cart:cart-remove' article.article %}"#}
+	{#											hx-trigger="click"#}
+	{#											hx-target="#cart-remove-{{ article.article }}"#}
+	{#											hx-swap="outerHTML"#}
+	{#											class="cart-remove-form">#}
+	{#											{% csrf_token %}#}
+												<button class="cart-remove-btn" type="submit" style="border: none; background: none; padding: 0">
+													<img src="https://img.icons8.com/?size=22&id=11705&format=png&color=8F9999FF" alt="Удалить артикул">
+												</button>
+	{#										</form>#}
+										</li>
+									</ul>
+								</td>
+							</tr>
+						{% endwith %}
+					{% endfor %}
+					</tbody>
+				</table>
+			{% else %}
+				<p class="cart-empty">В корзине пока нет товаров</p>
+			{% endif %}
+		</div>
+		<div class="cart-right-container">
+			<div class="cart-final-price">
+				<h4>Ваша корзина</h4>
+				<div class="cart-final-price-wrapper">
+					<p class="cart-final-price-title">
+						Итоговая стоимость </p>
+					<p id="total-price">
+						0 ₽
+					</p>
+				</div>
+				<div class="cart-final-price-links">
+					<button type="submit" class="cart-final-price-place-order">
+						<a href="#">Оформить заказ</a>
+					</button>
+					<p class="cart-final-price-continue-shopping">
+						<a href="{% url 'shop:product_list' %}">Продолжить покупки</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}

@@ -84,7 +84,7 @@ class ArticleSizeQuantityPrice(models.Model):
     """Модель размеров, количеств и цен у артикулов товара"""
     product = models.ForeignKey(
         'Product', on_delete=models.CASCADE,
-        related_name='sizes_quantity_prices',
+        related_name='articles',
         verbose_name='Товар',
     )
     article = models.PositiveIntegerField(
@@ -102,7 +102,7 @@ class ArticleSizeQuantityPrice(models.Model):
     size = models.ForeignKey(
         ProductSize,
         on_delete=models.CASCADE,
-        related_name='sizes_quantity_prices',
+        related_name='articles',
         verbose_name='Размер',
     )
     price = models.PositiveSmallIntegerField(
