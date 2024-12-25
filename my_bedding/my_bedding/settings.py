@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "shop.apps.ShopConfig",
     "cart.apps.CartConfig",
+    "orders.apps.OrdersConfig",
+    "coupons.apps.CouponsConfig",
 ]
 
 MIDDLEWARE = [
@@ -103,3 +105,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "users.User"
 
 CART_SESSION_ID = 'cart'
+
+# PHONENUMBER_DEFAULT_REGION = 'RU'
+# PHONENUMBER_DB_FORMAT = 'E164'  # Для хранения в международном формате (+7XXXXXXXXXX)
+# PHONENUMBER_DEFAULT_FORMAT = 'E164'

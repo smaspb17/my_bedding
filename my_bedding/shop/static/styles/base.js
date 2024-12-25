@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// Карусель в Product list
+// Product list - карусель
 $(document).ready(function () {
     $('.product-images-slider').each(function () {
         var $slider = $(this);
@@ -273,8 +273,7 @@ $(document).ready(function () {
     });
 });
 
-
-// Карусель в Product detail
+// Product detail - карусель
 $(document).ready(function () {
     var thumbnailsToShow = 7; // Количество миниатюр, которые отображаются
 
@@ -368,17 +367,7 @@ $(document).ready(function () {
     toggleArrows(0, $('.slider-for').slick('getSlick').slideCount);
 });
 
-// Простое увеличение в Product Detail плагин Medium Zoom
-// window.addEventListener('load', function () {
-//     mediumZoom('.zoom-image', {
-//         margin: -150, // Убираем отступы
-//         background: '#fff', // Цвет фона
-//         container: document.documentElement, // Масштабируем относительно всего документа
-//         scrollOffset: 100,
-//     });
-// });
-
-// Количество товара в Cart detail
+// Cart detail - количество товара, скидка и стоимость
 document.addEventListener('DOMContentLoaded', function () {
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
@@ -404,44 +393,139 @@ document.addEventListener('DOMContentLoaded', function () {
             total += pricePerItem * quantity;
         });
 
-        // Обновляем итоговую стоимость
+        // Обновляем стоимость товаров на клиенте
         const totalPriceElement = document.getElementById('total-price');
         totalPriceElement.textContent = formatPrice(total);
+
+        // Локально высчитываем скидку и итоговую стоимость
+        const localDiscountPercentage = parseFloat(document.getElementById('discount-percentage').textContent) || 0;
+        const localDiscount = (total * localDiscountPercentage) / 100
+        const localTotalPriceAfterDiscount = total - localDiscount
+
+        // Обновляем скидку и итоговую стоимость на клиенте
+        document.getElementById('discount').textContent = formatPrice(localDiscount);
+        document.getElementById('total-price-after-discount').textContent = formatPrice(localTotalPriceAfterDiscount);
+
+        // Отправляем запрос на сервер для получения актуальных данных
+        fetch('/cart/get_discount/', {
+            method: 'GET',
+            headers: {
+                'X-CSRFToken': csrfToken
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const serverDiscountPercentage = parseFloat(data.discount_percentage || 0); // Получаем процент скидки
+            const serverDiscount = (total * serverDiscountPercentage) / 100
+            const serverDiscountCode = data.discount_code || ''; // Получаем код
+            const serverTotalPriceAfterDiscount = total - serverDiscount;
+
+            document.getElementById('discount').textContent = formatPrice(serverDiscount);
+            document.getElementById('discount-percentage').textContent = `${serverDiscountPercentage} %`; // Обновляем процент скидки
+            document.getElementById('coupon-code').value = serverDiscountCode; // Выводим промокод в поле ввода
+            document.getElementById('total-price-after-discount').textContent = formatPrice(serverTotalPriceAfterDiscount);
+
+        })
+        .catch(error => console.error('Ошибка при обновлении итогов:', error));
+    }
+
+    // Обработка применения промокода
+    const couponForm = document.getElementById('coupon-form');
+    const couponMessage = document.getElementById('coupon-message');
+
+    if (couponForm) {
+        couponForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const couponInput = document.getElementById('coupon-code');
+
+            fetch('/coupons/apply/', {
+                method: 'POST',
+                headers: {
+                    // 'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: new FormData(couponForm)  // Отправляем форму
+            })
+            .then(response => response.json())
+            .then(data => {
+                couponMessage.textContent = data.message;
+                couponMessage.style.color = data.success ? 'green' : 'red';
+
+                // Показываем сообщение
+                couponMessage.classList.add('visible');
+
+                // Скрываем сообщение через 5 секунд
+                setTimeout(() => {
+                    couponMessage.classList.remove('visible');
+                }, 5000);
+
+                if (data.success) {
+                    couponInput.value = data.code; // Обновляем поле с промокодом
+                    const discountPercentage = data.discount_percentage;
+                    document.getElementById('discount-percentage').textContent = `${discountPercentage} %`; // Обновляем процент скидки
+                    calculateTotalPrice();
+                } else {
+                // Если запрос неудачный
+                    couponInput.value = ''; // Очищаем поле с промокодом
+                    document.getElementById('discount-percentage').textContent = '0 %'; // Обновляем процент скидки на 0 %
+                    calculateTotalPrice(); // Пересчитываем итоговую стоимость
+                }
+            })
+            .catch(error => console.error('Ошибка при применении промокода:', error));
+        });
     }
 
     // Функция для удаления товара из корзины
     function removeItem(articleId) {
-        // Удаляем строку из таблицы
-        const row = document.getElementById(`cart-remove-${articleId}`);
-        if (row) {
-            row.remove();
-        }
-
-        // Пересчитываем итоговую стоимость
-        calculateTotalPrice();
-
-        // Проверяем, остались ли товары
-        const cartRows = document.querySelectorAll('.cart-table-tr');
-        if (cartRows.length === 0) {
-            // Показать сообщение о пустой корзине
-            const cartContainer = document.querySelector('.cart-left-container');
-            const emptyMessage = document.createElement('p');
-            emptyMessage.classList.add('cart-empty');
-            emptyMessage.textContent = 'В корзине пока нет товаров';
-            cartContainer.appendChild(emptyMessage);
-        }
-
         // Отправляем запрос на сервер для удаления
         fetch(`/cart/remove/${articleId}/`, {
             method: 'POST',
             headers: {
                 'X-CSRFToken': csrfToken
             }
-        }).then(response => {
-            if (!response.ok) {
+        })
+        .then(response => {
+            if (response.ok) {
+                // Удаляем строку и обновляем корзину только после успешного ответа сервера
+                const row = document.getElementById(`cart-remove-${articleId}`);
+                if (row) {
+                    row.remove();
+                }
+                // Проверяем, остались ли товары
+                const cartRows = document.querySelectorAll('.cart-table-tr');
+                if (cartRows.length === 0) {
+                    // Показать сообщение о пустой корзине
+                    const cartContainer = document.querySelector('.cart-left-container');
+                    const emptyMessage = document.createElement('p');
+                    const cartButton = document.getElementById('cart-button');
+                    const couponButton = document.getElementById('coupon-button');
+                    cartButton.disabled = true;
+                    couponButton.disabled = true;
+                    emptyMessage.classList.add('cart-empty');
+                    emptyMessage.textContent = 'В корзине пока нет товаров';
+                    cartContainer.appendChild(emptyMessage);
+
+                    // Обновляем отображение
+                    document.getElementById('coupon-code').value = ''; // Очищаем поле купона
+                    document.getElementById('discount-percentage').textContent = '0 %'; // Обновляем процент скидки
+                    const couponMessage = document.getElementById('coupon-message');
+                    couponMessage.textContent = 'Промокод неактивен';
+                    couponMessage.style.color = 'red';
+                    couponMessage.classList.add('visible');
+
+                    // Скрыть сообщение через 5 секунд
+                    setTimeout(() => {
+                        couponMessage.classList.remove('visible');
+                    }, 5000);
+                }
+                // Пересчитываем итоговую стоимость
+                calculateTotalPrice();
+            } else {
                 console.error('Ошибка при удалении товара из корзины');
             }
-        });
+        })
+        .catch(error => console.error('Ошибка сети:', error));
     }
 
     // Навешиваем обработчик на кнопки удаления
@@ -561,4 +645,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Инициализация при загрузке страницы
     calculateTotalPrice();
 });
+
+
 

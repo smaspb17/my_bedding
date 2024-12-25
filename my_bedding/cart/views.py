@@ -5,6 +5,8 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 
+from coupons.forms import CouponForm
+from coupons.models import Coupon
 from shop.models import Product, ArticleSizeQuantityPrice
 from .cart import Cart
 
@@ -64,22 +66,44 @@ def update_quantity(request, article):
 def cart_remove(request, article):
     cart = Cart(request)
     cart.remove(article)
+    if not cart.cart:
+        request.session['coupon_id'] = None
+    # print(cart.cart)
     return JsonResponse({'message': 'Товар удален из корзины', 'success': True})
 
 
 def cart_detail(request):
     cart = Cart(request)
+    coupon_apply_form = CouponForm()
     context = {
         'cart': cart,
+        'coupon_apply_form': coupon_apply_form,
+        # 'total_price': cart.get_total_price(),
+        # 'discount': cart.get_discount(),
+        # 'total_price_after_discount': cart.get_total_price_after_discount(),
         # 'current_path': request.path,
     }
     return render(request, 'cart/cart_detail.html', context)
 
 
-def cart_status(request):
-    """Возвращает список артикулов, находящихся в корзине."""
+# def cart_status(request):
+#     """Возвращает список артикулов, находящихся в корзине."""
+#     cart = Cart(request)
+#     articles_in_cart = [item['article'] for item in cart]
+#     return JsonResponse({'cart': articles_in_cart})
+
+
+def get_discount(request):
     cart = Cart(request)
-    articles_in_cart = [item['article'] for item in cart]
-    return JsonResponse({'cart': articles_in_cart})
-
-
+    discount = cart.get_discount()
+    if request.session['coupon_id'] is not None:
+        coupon_id = request.session['coupon_id']
+        coupon = Coupon.objects.get(id=coupon_id)
+        discount_percentage = coupon.discount
+        discount_code = coupon.code
+    else:
+        discount_percentage = 0
+        discount_code = ''
+    return JsonResponse({'discount': discount,
+                         'discount_percentage': discount_percentage,
+                         'discount_code': discount_code})
