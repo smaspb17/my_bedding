@@ -922,27 +922,42 @@ body {
 	display: flex;
 }
 .cart-left-container {
-	min-width: 950px;
+	width: 70%;
+	/*min-width: 863px;*/
+}
+.cart-right-container {
+	width: 30%;
+	margin-left: 15px;
+
+	position: sticky;
+	top: 55px;
+	align-self: flex-start; /* Выравнивание по началу контейнера */
 }
 .cart-table {
 	border-collapse: collapse;
-	width: 100%;
+	/*width: auto;*/
+	margin-bottom: 0;
+	border: none;
 }
 
 .cart-table .cart-table-tr {
-	border: 0.5px solid #DEE2E6; /* Рамки для таблицы, заголовков и ячеек */
-	padding: 0; /* Отступы внутри ячеек */
-	margin: 0;
+	border: 1px solid #DEE2E6; /* Рамки для таблицы, заголовков и ячеек */
+	/*padding: 40px  !important; !* Отступы внутри ячеек *!*/
+	/*margin: 0;*/
 }
 .cart-table .cart-table-td {
-    padding: 16px; /* Отступы внутри ячеек */
-    border: none;
+    padding: 25px; /* Отступы внутри ячеек */
+    /*border: none;*/
     text-align: center; /* Центрируем содержимое */
     width: auto; /* Позволяем ячейкам адаптироваться */
 }
 
 .cart-table .cart-table-td:nth-child(n+2) {
     padding-left: 0;
+	padding-right: 0;
+}
+.cart-table .cart-table-td:nth-child(6) {
+	padding-right: 25px;
 }
 .cart-table .cart-table-td:nth-child(2) {
     text-align: left; /* Текст слева для лучшей читаемости */
@@ -988,11 +1003,14 @@ body {
 }
 
 .cart-table .cart-table-td:nth-child(2) {
-    min-width: 370px; /* Минимальная ширина для ячейки */
+    min-width: 300px; /* Минимальная ширина для ячейки */
 }
-
-.cart-table .cart-table-td:nth-child(5),
 .cart-table .cart-table-td:nth-child(3) {
+	min-width: 100px; /* Минимальная ширина для ячейки */
+	position: relative; /* Для управления вложенными элементами */
+    text-align: center; /* Центрируем содержимое */
+}
+.cart-table .cart-table-td:nth-child(5) {
     position: relative; /* Для управления вложенными элементами */
     min-width: 130px; /* Минимальная ширина для ячейки */
     text-align: center; /* Центрируем содержимое */
@@ -1091,21 +1109,28 @@ body {
 }
 
 .cart-final-price {
-	width: auto;
+	min-width: 368px;
 	height: auto;
 	border: 0.5px solid #DEE2E6;
-	margin-left: 15px;
-	padding: 25px 15px 15px 15px;
+	padding: 25px 25px 25px 25px;
 	color: #333333
 }
+.cart-final-price-wrapper-first {
+	margin-top: 5px !important;
+}
 .cart-final-price-wrapper {
-	margin-top: 20px;
+	margin-top: 10px;
 	display: flex;
 	justify-content: space-between;
 	gap: 25px;
-	font-size: 18px;
+	font-size: 17px;
 	font-weight: 500;
 	line-height: 26px;
+}
+.cart-final-price-wrapper-first,
+.cart-final-price-wrapper-second {
+	font-weight: 400;
+	/*font-size: 17px;*/
 }
 .cart-final-price-title {
 	white-space: nowrap;
@@ -1123,20 +1148,35 @@ body {
 	width: 100%;
 	height: 45px;
 	border-radius: 4px;
-	border: 1px solid rgb(143, 153, 153);
-	background: #fff;
-}
-.cart-final-price-place-order a {
+	/*background: #D8BB76;*/
+	background: #D8BB76;
+	border: 2px solid #D7B35E;
+	/*border: 1px solid rgb(143, 153, 153);*/
+	/*background: #fff;*/
 	font-size: 17px;
 	font-weight: 500;
 	line-height: 26px;
+	color: white;
 }
 .cart-final-price-place-order:hover {
 	background: #D8BB76;
-	border: 1px solid #D7B35E;
+	border: 2px solid #D7B35E;
+	color: #333333;
 }
-.cart-final-price-place-order:hover a {
-    color: white; /* Белый текст при наведении */
+/*.cart-final-price-place-order:hover a {*/
+/*    color: #333333; !* Белый текст при наведении *!*/
+/*}*/
+.cart-final-price-place-order:disabled {
+    background-color: #ccc; /* Серый фон */
+	border: 2px solid #ccc;
+	color: #333333;
+    cursor: not-allowed;   /* Указывает, что действие недоступно */
+    opacity: 0.6;         /* Полупрозрачность */
+}
+.cart-final-price hr {
+    border: none; /* Убираем стандартную границу */
+    border-top: 0.2px solid #333333; /* Устанавливаем границу сверху */
+    color: #333333; /* Устанавливаем цвет линии */
 }
 .cart-final-price-continue-shopping {
 	margin-top: 20px;
@@ -1165,10 +1205,471 @@ body {
 	font-size: 23px;
 	font-weight: 450;
 	line-height: 27px;
+}
 
+.promo-code-container {
+	font-size: 15px;
+}
+.coupon-form {
+	display: flex;
+	align-items: end;
+}
+#coupon-message {
+    visibility: hidden; /* Скрывает элемент, но сохраняет его место */
+    height: 1.5em; /* Задайте фиксированную высоту для сообщения */
+    font-size: 14px;
+    transition: visibility 0.3s, opacity 0.3s; /* Для плавного появления */
+    opacity: 0; /* Начальное состояние прозрачности */
+	margin-bottom: 0;
+}
+#coupon-message.visible {
+    visibility: visible;
+    opacity: 1;
+}
 
+#coupon-code {
+    width: 90%;
+    height: 35px;
+    border-radius: 4px;
+    border: 1px solid rgb(143, 153, 153); /* Стандартная рамка */
+    background: #fff;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 24px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Плавное изменение цвета */
+}
+
+#coupon-code:focus {
+    border-color: #D8BB76; /* Цвет рамки при фокусе, соответствующий основной стилистике */
+    box-shadow: 0 0 5px rgba(216, 187, 118, 0.6); /* Легкая тень вокруг поля при фокусе */
+    outline: none; /* Убираем стандартное выделение при фокусе */
+}
+
+.coupon-button {
+	/*margin-top: 23px;*/
+	width: 100%;
+	height: 35px;
+	border-radius: 4px;
+	border: 1px solid rgb(143, 153, 153);
+	/*border: 1.5px solid #D7B35E;*/
+	background: #fff;
+	font-size: 15px;
+	font-weight: 400;
+	line-height: 24px;
+}
+
+.coupon-button:hover {
+	background: #D8BB76;
+	border: 1.5px solid #D7B35E;
+	color: white;
+}
+.coupon-button:disabled {
+    background-color: #ccc; /* Серый фон */
+	border: 2px solid #ccc;
+	color: #333333;
+    cursor: not-allowed;   /* Указывает, что действие недоступно */
+    opacity: 0.6;         /* Полупрозрачность */
 }
 
 
-
 /*Корзина*/
+
+/*Заказы*/
+
+.order-container {
+	display: flex;
+}
+.order-left-container-wrapper {
+	width: 60%;
+}
+.order-right-container {
+	width: 40%;
+
+	position: sticky;
+	top: 55px;
+	align-self: flex-start; /* Выравнивание по началу контейнера */
+}
+
+.order-left-container {
+	border: 1px solid #DEE2E6;
+	/*border: 1px solid #c6c6c6;*/
+	padding: 30px 30px 30px 30px;
+	margin-bottom: 15px;
+}
+.order-left-container h5 {
+	margin-bottom: 20px;
+	/*text-align: center;*/
+}
+.order-left-container .first-title-article {
+	margin-bottom: 3px;
+}
+.order-left-container .first-p-article {
+	padding-left: 3px;
+}
+
+.order-final-price {
+	width: auto;
+	height: auto;
+	border: 1px solid #DEE2E6;
+	/*border: 1px solid #c6c6c6;*/
+	margin-left: 15px;
+	padding: 30px 25px 35px 25px;
+	color: #333333
+}
+
+
+.order-final-price-first-string {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 100%;
+	margin-bottom: 20px;
+}
+.order-final-price-first-string h4 {
+	margin: 0;
+}
+.update-order-link {
+	height: 100%;
+	margin-bottom: 0;
+
+
+}
+.update-order-link a {
+	text-decoration: none;
+	color: #D7B35E;
+	font-size: 18px;
+	font-weight: 400;
+	line-height: 26px;
+}
+.update-order-link:hover a {
+	color: #333333;
+}
+.order-final-price-wrapper {
+	margin-top: 5px;
+	display: flex;
+	justify-content: space-between;
+	gap: 25px;
+	font-size: 17px;
+	font-weight: 550;
+	line-height: 26px;
+}
+.order-final-price-wrapper-first,
+.order-final-price-wrapper-second {
+	font-weight: 400;
+}
+.order-final-price-title {
+	white-space: nowrap;
+}
+.order-final-price-wrapper p {
+	margin: 0;
+	text-decoration: none;
+}
+.order-final-price-links a {
+	text-decoration: none;
+	color: #333333;
+}
+#order-button {
+	margin-top: 23px;
+	width: 100%;
+	height: 45px;
+	border-radius: 4px;
+	color: white;
+	/*border: 1px solid rgb(143, 153, 153);*/
+	border: 1px solid #D7B35E;
+	background: #D8BB76;
+
+}
+#order-button {
+	font-size: 17px;
+	font-weight: 500;
+	line-height: 26px;
+}
+#order-button:hover {
+	background: #D8BB76;
+	border: 1px solid #D7B35E;
+	color: #333333; /* Белый текст при наведении */
+}
+#order-button:disabled {
+    background-color: #ccc; /* Серый фон */
+	border: 2px solid #ccc;
+	color: #333333;
+    cursor: not-allowed;   /* Указывает, что действие недоступно */
+    opacity: 0.6;         /* Полупрозрачность */
+}
+
+#order-total-price {
+	min-width: 110px;
+	text-align: right;
+}
+
+.order-styled-form {
+    max-width: 100%; /* Поля растягиваются на ширину родителя */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Интервал между полями */
+}
+
+.order-styled-form label {
+    font-size: 14px; /* Чуть меньший шрифт */
+    margin-bottom: 5px; /* Расстояние между лейблом и полем */
+}
+
+.order-styled-form input,
+.order-styled-form textarea {
+    width: 100%; /* Поля на всю ширину */
+    height: 45px; /* Высота полей */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ECECEC; /* Граница */
+    border-radius: 5px; /* Скругленные углы */
+    background-color: #F8F8F8; /* Светлый фон до фокуса */
+	margin-bottom: 0px; /* Отступ между полем и лейблом следующего поля */
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.order-styled-form textarea {
+    height: 90px; /* Увеличенная высота текстового поля */
+    resize: none; /* Убираем возможность масштабирования */
+}
+
+.order-styled-form input:focus,
+.order-styled-form textarea:focus {
+    /*background-color: #ffffff; !* Белый фон при фокусе *!*/
+    /*border-color: #ECECEC; !* Подсветка границы *!*/
+    /*outline: none; !* Убираем стандартное обводку *!*/
+	background-color: #ffffff; /* Белый фон при фокусе */
+	border-color: #D8BB76; /* Цвет рамки при фокусе, соответствующий основной стилистике */
+	/*border-color: #ECECEC; !* Цвет рамки при фокусе, соответствующий основной стилистике *!*/
+    /*border-color: #ECECEC; !* Подсветка границы *!*/
+    outline: none; /* Убираем стандартную обводку */
+    /*box-shadow: 0 0 5px 2px rgba(219, 188, 115, 0.7); !* Золотистая тень *!*/
+	box-shadow: 0 0 4px 2px rgba(216, 187, 118, 0.6); /* Легкая тень вокруг поля при фокусе */
+}
+
+.suggestions-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+    z-index: 1000;
+}
+
+.suggestions-list li {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.suggestions-list li:hover {
+    background-color: #f0f0f0;
+}
+
+.order-types-of-delivery {
+	/*display: flex;*/
+}
+
+.order-delivery-pick-up-points {
+	display: flex;
+	gap: 30px;
+	justify-content: left;
+	margin-bottom: 20px;
+}
+
+.delivery-button {
+    width: 150px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+	border-radius: 6px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.delivery-button:hover {
+    border-color: #000;
+}
+
+.delivery-button .logo-image {
+    width: 80%;
+    height: auto;
+}
+
+input[readonly] {
+    background-color: #F8F8F8; /* Цвет фона, как у disabled */
+    /*color: #6c757d; !* Цвет текста, как у disabled *!*/
+    border: 1px solid #ECECEC; /* Цвет рамки */
+    cursor: not-allowed; /* Указатель мыши */
+}
+
+input[readonly]:active {
+    background-color: #F8F8F8; /* Убедитесь, что фон не изменяется при нажатии */
+    /*color: #6c757d; !* Цвет текста остается неизменным *!*/
+}
+
+.pickup_point_hidden {
+    display: none;
+}
+
+.order-table {
+	border-collapse: collapse;
+	/*width: auto;*/
+	margin-bottom: 0;
+	border: none;
+}
+
+.order-table .order-table-tr {
+	/*display: flex; !* Используем Flexbox *!*/
+    /*align-items: flex-start; !* Вертикальное выравнивание *!*/
+    /*justify-content: space-between; !* Горизонтальное выравнивание (влево) *!*/
+	border: none;
+	border-bottom: 1px solid #DEE2E6;
+}
+.order-table .order-table-tr:last-child {
+	border-bottom: none;
+}
+.order-table .order-table-td {
+	padding: 10px 30px 10px 30px; /* Отступы внутри ячеек */
+	border: none;
+	/*text-align: left; !* Центрируем содержимое *!*/
+	width: auto; /* Позволяем ячейкам адаптироваться */
+
+}
+
+.order-table-items {
+	font-size: 15px;
+	font-weight: 500;
+	text-decoration: none;
+	color: #333333;
+	margin-bottom: 0;
+	text-align: center;
+	/*height: 100%;*/
+}
+.order-table-items p {
+	margin: 0;
+}
+.order-item-wrapper {
+    display: flex;
+    justify-content: center; /* По горизонтали */
+    align-items: center;    /* По вертикали */
+    height: 100%;           /* Убедитесь, что высота заполнена */
+}
+
+.order-table-label {
+	position: absolute;
+	margin-top: 50px; /* Размещаем лейбл внизу */
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 14px;
+}
+.order-table .order-table-td:first-child {
+	padding-left: 0;
+	padding-top: 15px;
+}
+.order-table .order-table-td:nth-child(2) {
+    min-width: 330px; /* Минимальная ширина для ячейки */
+	padding-left: 5px;
+}
+.order-table .order-table-td:nth-child(3) {
+	padding-left: 70px;
+	text-align: center;
+	vertical-align: middle;
+	/*align-items: center;*/
+}
+.order-table .order-table-td:nth-child(3) p {
+	white-space: nowrap;
+}
+.order-title {
+	font-size: 16px;
+	font-weight: 400;
+	text-decoration: none;
+	color: #333333;
+	margin-bottom: 0.4rem;
+}
+.order-params,
+.order-params .accordion-button {
+	font-size: 14px;
+	font-weight: 400;
+	color: #333333;
+}
+.order-params-value {
+	padding-left: 15px;
+}
+.accordion-item {
+	border: none;
+}
+.accordion-body hr {
+	width: 80%;
+	margin: 0 0 2px 0;
+	color: #cfd7d7;
+}
+.accordion-button {
+    border: none; /* Убираем рамку */
+    padding: 0; /* Убираем отступы для текста */
+    outline: none; /* Убираем синюю рамку при фокусе */
+    box-shadow: none; /* Убираем тень */
+    text-align: left; /* Выравниваем текст по левому краю */
+	background-color: transparent; /* Убираем любой фон */
+    color: #333333; /* Цвет текста */
+}
+ /*Убираем синий фон и цвет текста для активной кнопки аккордеона*/
+.accordion-button:not(.collapsed) {
+    color: inherit; /* Используем наследуемый цвет текста */
+    background-color: transparent; /* Убираем синий фон */
+    box-shadow: none; /* Убираем тень */
+}
+.accordion-button:focus {
+    outline: none; /* Убираем фокус */
+    box-shadow: none; /* Убираем тень при фокусе */
+}
+.accordion-button::after {
+    margin-left: 5px; /* Делаем стрелку ближе к тексту */
+	color: #333333; /* Задаем цвет стрелки */
+	height: 19px;
+	width: 19px;
+}
+.accordion-body {
+    padding: 0; /* Минимизируем отступы в теле аккордеона */
+    margin-top: 5px; /* Добавляем отступ сверху для удобочитаемости */
+}
+
+/* Общие ошибки формы */
+.form-errors {
+    color: #ff0000; /* Красный цвет */
+    font-size: 14px; /* Уменьшенный размер шрифта */
+	line-height: 21px;
+    margin-bottom: 10px;
+}
+
+/* Ошибки конкретного поля */
+.error-message {
+    color: #ff0000; /* Красный цвет */
+    font-size: 14px; /* Уменьшенный размер шрифта */
+	line-height: 21px;
+    margin-top: 0;
+}
+
+/* Анимация для скрытия ошибки */
+.fade-out {
+    animation: fadeOut 1s forwards;
+    animation-delay: 9s; /* Задержка перед исчезновением */
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+.order-left-container label {
+	padding-right: 3px;
+}
+
+/*Заказы*/

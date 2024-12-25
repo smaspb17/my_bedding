@@ -4,7 +4,7 @@
 	<div class="container cart-container">
 		<div class="cart-left-container">
 			{% if cart.cart|length > 0 %}
-				<table class="table table-bordered cart-table caption-top">
+				<table class="table cart-table caption-top">
 					<tbody>
 					{% for item in cart %}
 						{% with article=item.article product=item.product %}
@@ -108,6 +108,7 @@
 					{% endfor %}
 					</tbody>
 				</table>
+
 			{% else %}
 				<p class="cart-empty">В корзине пока нет товаров</p>
 			{% endif %}
@@ -115,17 +116,64 @@
 		<div class="cart-right-container">
 			<div class="cart-final-price">
 				<h4>Ваша корзина</h4>
-				<div class="cart-final-price-wrapper">
+				<div class="promo-code-container">
+					<form action="{% url "coupons:apply" %}" method="post" class="coupon-form" id="coupon-form">
+						<div class="coupon-label-and-input-container">
+							<label for="coupon-code">Промокод</label>
+							<input type="text" name="code" id="coupon-code" value="" required>
+{#							{{ coupon_apply_form }}#}
+							{% csrf_token %}
+						</div>
+						<div class="coupon-button-container">
+							<input
+								type="submit"
+								value="Применить"
+								class="coupon-button"
+								id="coupon-button"
+								{% if cart|length == 0 %} disabled {% endif %}>
+						</div>
+					</form>
+					<p id="coupon-message"></p>
+				</div>
+
+				<div class="cart-final-price-wrapper cart-final-price-wrapper-first">
 					<p class="cart-final-price-title">
-						Итоговая стоимость </p>
+						Стоимость товаров</p>
 					<p id="total-price">
 						0 ₽
 					</p>
 				</div>
+
+				<div class="cart-final-price-wrapper cart-final-price-wrapper-second">
+					<p class="cart-final-price-title">
+						Скидка (<span id="discount-percentage">0 %</span>) </p>
+{#						Скидка ({% discount_percentage %} %) </p>#}
+					<p id="discount">
+						0 ₽
+					</p>
+				</div>
+				<hr>
+				<div class="cart-final-price-wrapper">
+					<p class="cart-final-price-title">
+						Итоговая стоимость</p>
+					<p id="total-price-after-discount">
+						0 ₽
+					</p>
+				</div>
+
 				<div class="cart-final-price-links">
-					<button type="submit" class="cart-final-price-place-order">
-						<a href="#">Оформить заказ</a>
-					</button>
+					<form action="{% url 'orders:order_create' %}" method="get">
+					    <button
+					        type="submit"
+					        class="cart-final-price-place-order"
+					        id="cart-button"
+					        {% if cart|length == 0 %} disabled {% endif %}>
+					        Перейти к оформлению
+					    </button>
+					</form>
+{#					<button type="submit" class="cart-final-price-place-order">#}
+{#						<a href="{% url 'orders:order_create' %}">Перейти к оформлению</a>#}
+{#					</button>#}
 					<p class="cart-final-price-continue-shopping">
 						<a href="{% url 'shop:product_list' %}">Продолжить покупки</a>
 					</p>

@@ -1,0 +1,397 @@
+{% extends 'shop/base.html' %}{% load shop_tags_filters %}{% load static %}
+
+{% block content %}
+	<div class="container">
+		<form action="{% url 'orders:order_create' %}" method="post" class="order-styled-form">
+			{% csrf_token %}
+			<div class="order-container">
+				<!-- Общие ошибки формы -->
+	            {% if form.non_field_errors %}
+	                <div class="form-errors">
+	                    {{ form.non_field_errors }}
+	                </div>
+	            {% endif %}
+				<div class="order-left-container-wrapper">
+					<div class="order-left-container">
+						<div class="articles">
+							<h5 class="first-title-article">Товары в заказе</h5>
+								<div class="accordion" id="accordionOrderExample">
+									<div class="accordion-item order-articles">
+										<p class="accordion-header">
+											<button class="accordion-button collapsed order-articles-key" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrder" aria-expanded="false" aria-controls="collapseOne-{{ article.article }}">
+												{{ cart|length|pluralize_ru:"товар,товара,товаров" }}
+											</button>
+										</p>
+										<div id="collapseOrder" class="accordion-collapse collapse" data-bs-parent="#accordionOrderExample">
+											<div class="accordion-body order-articles-value">
+												<table class="table order-table">
+													<tbody>
+													{% for item in cart %}
+														{% with article=item.article product=item.product %}
+
+															<tr class="order-table-tr">
+
+																<td class="order-table-td">
+																	{% with product.product_images|image_size:"450x450" as images %}
+																		<a href="{% url 'shop:product_detail' product.category.slug product.id %}">
+																			<img src="{{ images.first.image.url }}" alt="" height="90" width="90"> </a>
+																		{% endwith %}
+																</td>
+
+																<td class="order-table-td">
+																	<a href="{% url 'shop:product_detail' product.category.slug product.id %}" class="order-title">
+																		<p class="order-title">{{ product.title }}</p>
+																	</a>
+																	<table class="cart-table-params">
+																		<tr class="cart-params">
+																			<td class="cart-params-key">Артикул</td>
+																			<td class="cart-params-value">{{ article.article }}</td>
+																		</tr>
+																		<tr class="cart-params">
+																			<td class="cart-params-key">Размер</td>
+																			<td class="cart-params-value">{{ article.size.title }}</td>
+																		</tr>
+																	</table>
+																	<div class="accordion" id="accordionExample-{{ article.article }}">
+																		<div class="accordion-item cart-params">
+																			<p class="accordion-header">
+																				<button class="accordion-button collapsed cart-params-key" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne-{{ article.article }}" aria-expanded="false" aria-controls="collapseOne-{{ article.article }}">
+																					Комплектация
+																				</button>
+																			</p>
+																			<div id="collapseOne-{{ article.article }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample-{{ article.article }}">
+																				<div class="accordion-body cart-params-value">
+																					<hr>
+																					{{ article.equipment|linebreaksbr }}
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</td>
+
+																<td class="order-table-td">
+																	<div class="order-item-wrapper">
+																		<div class="order-table-items">
+																			<p>
+																				{{ item.quantity }} шт.
+																			</p>
+																		</div>
+				{#														<p class="cart-table-items cart-table-label">#}
+				{#															количество </p>#}
+																	</div>
+																</td>
+
+															</tr>
+
+														{% endwith %}
+													{% endfor %}
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+
+{#							<div class="order-accordion-header" id="order-items-header">#}
+{#								#}
+{#								<span class="order-accordion-arrow">&#9660;</span>#}
+{#							</div>#}
+
+
+
+{#							<div class="order-accordion-body" id="order-items-body">#}
+
+{#							</div>#}
+
+
+
+{#							{% for item in cart_items %}#}
+{#								{{ item }}#}
+{#								{{ item.article.product.title }}, арт.№ {{ item.article.article }}#}
+{#								<br><br>#}
+{#							{% endfor %}#}
+
+
+
+						</div>
+					</div>
+
+					<div class="order-left-container">
+						<h5>Получатель</h5>
+						 {#					{{ form.as_p }}#}
+						{#				<button type="submit">Оформить заказ</button>#}
+{#						<label for="first_name">Имя:</label>#}
+{#						<input type="text" id="first_name" name="first_name" maxlength="50" required>#}
+						{{ form.first_name.label_tag }}
+						{% if form.first_name.errors %}
+                            <span class="error-message">{{ form.first_name.errors.0 }}</span>
+                        {% endif %}
+                        {{ form.first_name }}
+
+{#						<label for="last_name">Фамилия:</label>#}
+{#						<input type="text" id="last_name" name="last_name" maxlength="50"#}
+{#							   value="{{ form.last_name.value|default_if_none:'' }}" required>#}
+						{{ form.last_name.label_tag }}
+						{% if form.last_name.errors %}
+                            <span class="error-message">{{ form.last_name.errors.0 }}</span>
+                        {% endif %}
+                        {{ form.last_name }}
+
+{#						<label for="phone">Телефон:</label>#}
+{#						<input type="tel" id="phone" name="phone" maxlength="12" placeholder="+7 XXX XXX-XX-XX"#}
+{#							   value="{{ form.phone.value|default_if_none:'' }}" required>#}
+						{{ form.phone.label_tag }}
+						{% if form.phone.errors %}
+                            <span class="error-message">{{ form.phone.errors.0 }}</span>
+                        {% endif %}
+                        {{ form.phone }}
+
+{#						<label for="email">E-mail:</label>#}
+{#						<input type="email" id="email" name="email"#}
+{#							   value="{{ form.email.value|default_if_none:'' }}" required>#}
+						{{ form.email.label_tag }}
+						{% if form.email.errors %}
+                            <span class="error-message">{{ form.email.errors.0 }}</span>
+                        {% endif %}
+                        {{ form.email }}
+
+	{#					<label for="index">Индекс доставки:</label>#}
+	{#					<input type="text" id="index" name="index" maxlength="6" required>#}
+
+					</div>
+					<div class="order-left-container">
+						<h5>Способ доставки</h5>
+						<div class="order-types-of-delivery">
+							<div class="order-delivery-pick-up-points">
+								<button type="button" class="delivery-button" data-company="russian-post">
+									<img src="{% static '/logo_transport_company/russian-post-logo.svg' %}" class="logo-image" alt="почта России">
+								</button>
+
+{#								<div id="cdek-map" style="width:800px;height:600px"></div>#}
+
+								<button type="button" class="delivery-button" data-company="cdek">
+									<img src="{% static '/logo_transport_company/cdek-logo.svg' %}" class="logo-image" alt="СДЭК">
+								</button>
+								<button type="button" class="delivery-button" data-company="boxberry">
+									<img src="{% static '/logo_transport_company/boxberry-logo.svg' %}" class="logo-image" alt="Boxberry">
+								</button>
+								<button type="button" class="delivery-button" data-company="5post">
+									<img src="{% static '/logo_transport_company/5post-logo.svg' %}" class="logo-image" alt="5post">
+								</button>
+							</div>
+						</div>
+
+						<label for="user_address">Адрес получателя:</label>
+						{% if form.user_address.errors %}
+                            <span class="error-message">{{ form.user_address.errors.0 }}</span>
+                        {% endif %}
+						<input type="text" id="user_address" name="user_address" maxlength="250" autocomplete="off"
+							   value="{{ form.user_address.value|default_if_none:'' }}" required>
+{#						{{ form.user_address.label_tag }}#}
+{#                        {{ form.user_address }}#}
+
+						<div id="pickup-point-container">
+							<label for="pickup_point_address">Адрес доставки - отделение Почты России:</label>
+							{% if form.pickup_point_address.errors %}
+                                <span class="error-message">{{ form.pickup_point_address.errors.0 }}</span>
+                            {% endif %}
+                            <input
+	                            type="text" id="pickup_point_address" name="pickup_point_address"
+	                            value="{{ form.pickup_point_address.value|default_if_none:'' }}" readonly>
+{#							{{ form.pickup_point_address.label_tag }}#}
+{#                            {{ form.pickup_point_address }}#}
+
+						</div>
+
+{#						<label for="comment">Комментарий к заказу:</label>#}
+{#						<textarea id="comment" name="comment" maxlength="250"></textarea>#}
+					</div>
+				</div>
+
+				<div class="order-right-container">
+					<div class="order-final-price">
+						<div class="order-final-price-first-string">
+							<h4>Ваш заказ</h4>
+							<p class="update-order-link">
+								<a href="{% url 'cart:cart-detail' %}">изменить</a>
+							</p>
+						</div>
+
+						<div class="order-final-price-wrapper order-final-price-wrapper-first">
+							<p class="order-final-price-title">
+								Стоимость товаров </p>
+							<p id="order-total-price">
+								{{ cart.get_total_price|format_price }} ₽ </p>
+						</div>
+
+						<div class="order-final-price-wrapper order-final-price-wrapper-second">
+							<p class="order-final-price-title">
+								Скидка ({% discount_percentage %} %) </p>
+							<p id="order-discount">
+								{{ cart.get_discount|format_price }} ₽ </p>
+						</div>
+						<hr>
+						<div class="order-final-price-wrapper">
+							<p class="order-final-price-title">
+								Итоговая стоимость </p>
+							<p id="order-total-price">
+								{{ cart.get_total_price_after_discount|format_price }} ₽ </p>
+						</div>
+
+						<div class="order-final-price-links">
+							<button type="submit" class="order-final-price-place-order" id="order-button">
+								Оформить заказ
+							</button>
+							{#						<p class="cart-final-price-continue-shopping">#}
+							{#							<a href="{% url 'shop:product_list' %}">Продолжить покупки</a>#}
+							{#						</p>#}
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+<script>
+    function formatSelected(suggestion) {
+        if (suggestion.data.postal_code) {
+            return suggestion.data.postal_code + ', ' + suggestion.value;
+        } else {
+            return suggestion.value;
+        }
+    }
+
+    // Инициализация подсказок для поля "Адрес пользователя"
+    $("#user_address").suggestions({
+        token: "9f36d93fcb9c55612fbb7393c309c486a4632a0d",
+        type: "ADDRESS",
+        formatSelected: formatSelected,
+        onSelect: function(suggestion) {
+            const postalCode = suggestion.data.postal_code;
+            if (postalCode) {
+                fetchNearestPostalUnit(postalCode); // Вызов функции для получения ближайшего отделения
+            } else {
+                document.getElementById("pickup_point_address").value = "Индекс не указан";
+            }
+        }
+    });
+
+    // Функция для поиска ближайшего отделения Почты России
+    function fetchNearestPostalUnit(postalCode) {
+        const token = "9f36d93fcb9c55612fbb7393c309c486a4632a0d";
+        const url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/postal_unit";
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": `Token ${token}`
+            },
+            body: JSON.stringify({ query: postalCode })
+        };
+
+        fetch(url, options)
+            .then(response => response.json())
+            .then(data => {
+                const unit = data.suggestions[0];
+                const pickupPointContainer = document.getElementById("pickup-point-container");
+                const pickupPointInput = document.getElementById("pickup_point_address");
+
+                if (unit) {
+                    // Устанавливаем значение и показываем поле
+                    pickupPointInput.value = `${unit.value} (${unit.data.address_str})`;
+                } else {
+                    pickupPointInput.value = "Отделение не найдено";
+                }
+            })
+            .catch(error => {
+                console.error("Ошибка при поиске отделения:", error);
+                const pickupPointInput = document.getElementById("pickup_point_address");
+                pickupPointInput.value = "Ошибка при поиске отделения";
+            });
+    }
+
+    // Очистка поля "Адрес доставки", если пользователь начинает изменять "Адрес пользователя"
+    document.getElementById("user_address").addEventListener("input", function() {
+        const pickupPointInput = document.getElementById("pickup_point_address");
+        pickupPointInput.value = "";  // Очищаем поле доставки при изменении адреса
+
+        const userAddress = this.value;
+
+        if (userAddress) {
+            // После изменения адреса начинаем новый поиск по введенному адресу
+            const token = "9f36d93fcb9c55612fbb7393c309c486a4632a0d";
+            const url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address";
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "Authorization": `Token ${token}`
+                },
+                body: JSON.stringify({ query: userAddress })
+            };
+
+            fetch(url, options)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.suggestions && data.suggestions.length > 0) {
+                        const suggestion = data.suggestions[0];
+                        const postalCode = suggestion.data.postal_code;
+                        if (postalCode) {
+                            fetchNearestPostalUnit(postalCode); // Ищем ближайшее отделение
+                        } else {
+                            pickupPointInput.value = "Индекс не указан";
+                        }
+                    } else {
+                        pickupPointInput.value = "Адрес не найден";
+                    }
+                })
+                .catch(error => {
+                    console.error("Ошибка при поиске адреса:", error);
+                    pickupPointInput.value = "Ошибка при поиске адреса";
+                });
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const header = document.getElementById('order-items-header');
+        const body = document.getElementById('order-items-body');
+        const arrow = header.querySelector('.order-accordion-arrow');
+
+        header.addEventListener('click', function () {
+            body.classList.toggle('show');
+            arrow.classList.toggle('up');
+        });
+    });
+</script>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+	    // Проверяем, остались ли товары
+	    const orderRows = document.querySelectorAll('.order-table-tr');
+	    if (orderRows.length === 0) {
+	        // Показать сообщение о пустой корзине
+	        const orderButton = document.getElementById('order-button');
+	        orderButton.disabled = true;
+	        }
+	});
+</script>
+{#<script>#}
+{#    document.addEventListener('DOMContentLoaded', function () {#}
+{#        // Находим все элементы с ошибками#}
+{#        const errorElements = document.querySelectorAll('.form-errors, .error-message');#}
+{##}
+{#        // Устанавливаем таймер для скрытия ошибок#}
+{#        errorElements.forEach(function (element) {#}
+{#            setTimeout(function () {#}
+{#                element.classList.add('fade-out');#}
+{#            }, 10000); // 10 секунд#}
+{#        });#}
+{#    });#}
+{#</script>#}
+{% endblock %}
+
+
+
+

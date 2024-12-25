@@ -3,6 +3,7 @@ from decimal import Decimal
 from django.conf import settings
 from django.contrib import messages
 
+from coupons.models import Coupon
 from shop.models import Product, ArticleSizeQuantityPrice
 
 
@@ -15,6 +16,7 @@ class Cart:
             # сохранить пустую корзину в сеансе
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
+        self.coupon_id = self.session.get('coupon_id')
 
     def add(self, article_obj):
         """Добавление артикула в корзину (сессию)
@@ -53,6 +55,13 @@ class Cart:
             del self.cart[article_num]
             self.save()
 
+    # @staticmethod
+    def clear(self):
+        """Удаление корзины из сессии"""
+        # del request.session['cart']
+        del self.session[settings.CART_SESSION_ID]
+        self.save()
+
     def get_quantity(self, article_obj):
         article_num = str(article_obj.article)
         return self.cart[article_num]['quantity']
@@ -73,12 +82,39 @@ class Cart:
         """Пометка сеанса как измененного для его сохранения"""
         self.session.modified = True
 
+    def __len__(self):
+        """Подсчет количества товарных позиций в корзине"""
+        return sum(item['quantity'] for item in self.cart.values())
+
+    def get_total_price(self):
+        """Подсчет общей стоимости товаров в корзине"""
+        return sum(item['quantity'] * item['price'] for item in self.cart.values())
+
+    @property
+    def coupon(self):
+        if self.coupon_id:
+            try:
+                return Coupon.objects.get(id=self.coupon_id)
+            except Coupon.DoesNotExist:
+                pass
+        return None
+
+    def get_discount(self):
+        """Получение суммы скидки по промокоду"""
+        if self.coupon is not None:
+            return (self.coupon.discount / Decimal(100)) \
+                * self.get_total_price()
+        return 0
+
+    def get_total_price_after_discount(self):
+        """Получение стоимости после применения промокода"""
+        return self.get_total_price() - self.get_discount()
 
 
-session = {'cart': {
-    '5': {'price': Decimal('200.00'), 'product': '<Product: Кеды>',
-          'quantity': 1, 'total_price': Decimal('200.00'),
-          'update_quantity_form': '<CartAddProductForm                       '
-                                  '   bound=False, valid: Unknown, fields: ('
-                                  'quantity;override)>'}},
-    'order_id': 76}
+# session = {'cart': {
+#     '5': {'price': Decimal('200.00'), 'product': '<Product: Кеды>',
+#           'quantity': 1, 'total_price': Decimal('200.00'),
+#           'update_quantity_form': '<CartAddProductForm                       '
+#                                   '   bound=False, valid: Unknown, fields: ('
+#                                   'quantity;override)>'}},
+#     'order_id': 76}

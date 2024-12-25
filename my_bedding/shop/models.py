@@ -138,13 +138,11 @@ class ArticleSizeQuantityPrice(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Артикул, размер, комплектация, цена и остаток товара'
-        verbose_name_plural = ('Артикулы, размеры, комплектации, цены и '
-                               'остатки товара')
+        verbose_name = 'Артикул'
+        verbose_name_plural = ('Артикулы')
 
     def __str__(self):
-        return (f" Артикул, размер, комплектация, цена и остаток на товар:"
-                f" {self.product.title} (id {self.product.id})")
+        return (f"№ {self.article} ({self.product.title})")
 
     # def clean(self):
     #     super().clean()
