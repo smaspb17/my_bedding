@@ -89,6 +89,8 @@
 	        <h2>Корзина</h2>
 		{% elif request.path == '/orders/create/' %}
 			<h2>Оформление заказа</h2>
+		{% elif '/orders/status/' in request.path %}
+			<h2>Статус заказа</h2>
 		{% elif product %}
 			<h2>{{ product.title }}</h2>
 		{% elif category %}

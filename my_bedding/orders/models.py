@@ -87,22 +87,22 @@ class Order(models.Model):
         default='Created',
         verbose_name='Статус заказа',
     )
-    payment = models.CharField(
-        max_length=100,
-        choices=choices.PAYMENT_STATUS,
-        default='Not paid',
+    payment = models.BooleanField(
+        # max_length=100,
+        # choices=choices.PAYMENT_STATUS,
+        default=False,
         verbose_name='Оплачен',
     )
-    # stripe_id = models.CharField(
-    #     max_length=250, blank=True
-    # )
+    stripe_id = models.CharField(
+        max_length=250, blank=True
+    )
     coupon = models.ForeignKey(
         Coupon,
         related_name='orders',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        verbose_name='Купон',
+        verbose_name='Промокод',
     )
     discount_percentage = models.IntegerField(
         default=0,
@@ -169,17 +169,17 @@ class Order(models.Model):
         delivery_cost = self.delivery_cost
         return total_cost - discount + delivery_cost
 
-    # def get_stripe_url(self):
-    #     if not self.stripe_id:
-    #         # нет ассоциированных платежей
-    #         return ''
-    #     if '_test_' in settings.STRIPE_SECRET_KEY:
-    #         # путь stripe для тестовых платежей
-    #         path = '/test/'
-    #     else:
-    #         # пусть stripe для настоящих платежей
-    #         path = '/'
-    #     return f'https://dashboard.stripe.com{path}payments/{self.stripe_id}'
+    def get_stripe_url(self):
+        if not self.stripe_id:
+            # нет ассоциированных платежей
+            return ''
+        if '_test_' in settings.STRIPE_SECRET_KEY:
+            # путь stripe для тестовых платежей
+            path = '/test/'
+        else:
+            # пусть stripe для настоящих платежей
+            path = '/'
+        return f'https://dashboard.stripe.com{path}payments/{self.stripe_id}'
 
 
 class OrderItem(models.Model):
@@ -199,12 +199,15 @@ class OrderItem(models.Model):
         verbose_name='Цена'
     )
     quantity = models.PositiveSmallIntegerField(
-        default=1,
         verbose_name='Количество'
     )
 
     def __str__(self):
-        return str(self.id)
+        return ''
 
     def get_cost(self):
         return self.price * self.quantity
+
+    class Meta:
+        verbose_name = 'Товар в заказе'
+        verbose_name_plural = 'Товары в заказе'

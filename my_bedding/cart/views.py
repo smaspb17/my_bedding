@@ -75,6 +75,8 @@ def cart_remove(request, article):
 def cart_detail(request):
     cart = Cart(request)
     coupon_apply_form = CouponForm()
+    # if 'coupon_id' not in request.session:
+    #     request.session['coupon_id'] = None
     context = {
         'cart': cart,
         'coupon_apply_form': coupon_apply_form,
@@ -96,14 +98,14 @@ def cart_detail(request):
 def get_discount(request):
     cart = Cart(request)
     discount = cart.get_discount()
-    if request.session['coupon_id'] is not None:
+    if not request.session.get('coupon_id'):
+        discount_percentage = 0
+        discount_code = ''
+    else:
         coupon_id = request.session['coupon_id']
         coupon = Coupon.objects.get(id=coupon_id)
         discount_percentage = coupon.discount
         discount_code = coupon.code
-    else:
-        discount_percentage = 0
-        discount_code = ''
     return JsonResponse({'discount': discount,
                          'discount_percentage': discount_percentage,
                          'discount_code': discount_code})

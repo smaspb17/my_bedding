@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "cart.apps.CartConfig",
     "orders.apps.OrdersConfig",
     "coupons.apps.CouponsConfig",
+    "payment.apps.PaymentConfig",
 ]
 
 MIDDLEWARE = [
@@ -57,6 +58,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                # "orders.context_processors.redirect_source",
             ],
         },
     },
@@ -106,6 +108,45 @@ AUTH_USER_MODEL = "users.User"
 
 CART_SESSION_ID = 'cart'
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+# EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')  # если EMAIL_PORT = 587
+
+# # стучимся к rabbitmq из ПК в контейнер Docker
+# CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/'
+# # стучимся к redis из ПК в контейнер Docker
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+# # стучимся к redis если Django и redis оба в контейнере Docker
+# CELERY_BROKER_URL = "redis://redis:6379"
+
+# настроечные параметры Redis
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 1
+
+# доп параметры, значения могут быть другими, главное чтобы были
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
+
 # PHONENUMBER_DEFAULT_REGION = 'RU'
 # PHONENUMBER_DB_FORMAT = 'E164'  # Для хранения в международном формате (+7XXXXXXXXXX)
 # PHONENUMBER_DEFAULT_FORMAT = 'E164'
+
+# Stripe settings
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+STRIPE_API_VERSION = os.getenv('STRIPE_API_VERSION')
+STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
+
+# # Robokassa settings
+# ROBOKASSA_MERCHANT_LOGIN = os.getenv('ROBOKASSA_MERCHANT_LOGIN')
+# ROBOKASSA_PASSWORD_1 = os.getenv('ROBOKASSA_PASSWORD_1')
+# ROBOKASSA_PASSWORD_2 = os.getenv('ROBOKASSA_PASSWORD_2')
+# ROBOKASSA_TEST_MODE = os.getenv('ROBOKASSA_TEST_MODE')
+# ROBOKASSA_PAYMENT_URL = os.getenv('ROBOKASSA_PAYMENT_URL')

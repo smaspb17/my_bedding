@@ -11,6 +11,8 @@ class Cart:
     def __init__(self, request):
         """Инициализация корзины"""
         self.session = request.session
+        # if not request.session.get('coupon_id'):
+        #     request.session['coupon_id'] = None
         cart = self.session.get(settings.CART_SESSION_ID)
         if not cart:
             # сохранить пустую корзину в сеансе
