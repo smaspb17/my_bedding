@@ -1275,7 +1275,6 @@ body {
 /*Корзина*/
 
 /*Заказы*/
-
 .order-container {
 	display: flex;
 }
@@ -1289,7 +1288,6 @@ body {
 	top: 55px;
 	align-self: flex-start; /* Выравнивание по началу контейнера */
 }
-
 .order-left-container {
 	border: 1px solid #DEE2E6;
 	/*border: 1px solid #c6c6c6;*/
@@ -1306,7 +1304,6 @@ body {
 .order-left-container .first-p-article {
 	padding-left: 3px;
 }
-
 .order-final-price {
 	width: auto;
 	height: auto;
@@ -1316,23 +1313,9 @@ body {
 	padding: 30px 25px 35px 25px;
 	color: #333333
 }
-
-
-.order-final-price-first-string {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	height: 100%;
-	margin-bottom: 20px;
-}
-.order-final-price-first-string h4 {
-	margin: 0;
-}
 .update-order-link {
 	height: 100%;
 	margin-bottom: 0;
-
-
 }
 .update-order-link a {
 	text-decoration: none;
@@ -1343,6 +1326,16 @@ body {
 }
 .update-order-link:hover a {
 	color: #333333;
+}
+.order-final-price-first-string {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 100%;
+	margin-bottom: 20px;
+}
+.order-final-price-first-string h4 {
+	margin: 0;
 }
 .order-final-price-wrapper {
 	margin-top: 5px;
@@ -1368,52 +1361,44 @@ body {
 	text-decoration: none;
 	color: #333333;
 }
-#order-button {
+.order-final-price-links button {
 	margin-top: 23px;
 	width: 100%;
 	height: 45px;
 	border-radius: 4px;
 	color: white;
-	/*border: 1px solid rgb(143, 153, 153);*/
 	border: 1px solid #D7B35E;
 	background: #D8BB76;
-
-}
-#order-button {
 	font-size: 17px;
 	font-weight: 500;
 	line-height: 26px;
 }
-#order-button:hover {
+.order-final-price-links button:hover {
 	background: #D8BB76;
 	border: 1px solid #D7B35E;
 	color: #333333; /* Белый текст при наведении */
 }
-#order-button:disabled {
+.order-final-price-links button:disabled {
     background-color: #ccc; /* Серый фон */
 	border: 2px solid #ccc;
 	color: #333333;
     cursor: not-allowed;   /* Указывает, что действие недоступно */
     opacity: 0.6;         /* Полупрозрачность */
 }
-
 #order-total-price {
 	min-width: 110px;
 	text-align: right;
 }
-
 .order-styled-form {
     max-width: 100%; /* Поля растягиваются на ширину родителя */
     display: flex;
     flex-direction: column;
     gap: 20px; /* Интервал между полями */
 }
-
 .order-styled-form label {
     font-size: 14px; /* Чуть меньший шрифт */
     margin-bottom: 5px; /* Расстояние между лейблом и полем */
 }
-
 .order-styled-form input,
 .order-styled-form textarea {
     width: 100%; /* Поля на всю ширину */
@@ -1423,15 +1408,13 @@ body {
     border: 1px solid #ECECEC; /* Граница */
     border-radius: 5px; /* Скругленные углы */
     background-color: #F8F8F8; /* Светлый фон до фокуса */
-	margin-bottom: 0px; /* Отступ между полем и лейблом следующего поля */
+	margin-bottom: 0; /* Отступ между полем и лейблом следующего поля */
     transition: background-color 0.3s, border-color 0.3s;
 }
-
 .order-styled-form textarea {
     height: 90px; /* Увеличенная высота текстового поля */
     resize: none; /* Убираем возможность масштабирования */
 }
-
 .order-styled-form input:focus,
 .order-styled-form textarea:focus {
     /*background-color: #ffffff; !* Белый фон при фокусе *!*/
@@ -1445,7 +1428,6 @@ body {
     /*box-shadow: 0 0 5px 2px rgba(219, 188, 115, 0.7); !* Золотистая тень *!*/
 	box-shadow: 0 0 4px 2px rgba(216, 187, 118, 0.6); /* Легкая тень вокруг поля при фокусе */
 }
-
 .suggestions-list {
     list-style-type: none;
     margin: 0;
@@ -1458,28 +1440,23 @@ body {
     width: 100%;
     z-index: 1000;
 }
-
 .suggestions-list li {
     padding: 10px;
     cursor: pointer;
     font-size: 14px;
 }
-
 .suggestions-list li:hover {
     background-color: #f0f0f0;
 }
-
 .order-types-of-delivery {
 	/*display: flex;*/
 }
-
 .order-delivery-pick-up-points {
 	display: flex;
 	gap: 30px;
 	justify-content: left;
 	margin-bottom: 20px;
 }
-
 .delivery-button {
     width: 150px;
     height: 100px;
@@ -1492,39 +1469,32 @@ body {
     background-color: #f9f9f9;
     cursor: pointer;
 }
-
 .delivery-button:hover {
     border-color: #000;
 }
-
 .delivery-button .logo-image {
     width: 80%;
     height: auto;
 }
-
 input[readonly] {
     background-color: #F8F8F8; /* Цвет фона, как у disabled */
     /*color: #6c757d; !* Цвет текста, как у disabled *!*/
     border: 1px solid #ECECEC; /* Цвет рамки */
     cursor: not-allowed; /* Указатель мыши */
 }
-
 input[readonly]:active {
     background-color: #F8F8F8; /* Убедитесь, что фон не изменяется при нажатии */
     /*color: #6c757d; !* Цвет текста остается неизменным *!*/
 }
-
 .pickup_point_hidden {
     display: none;
 }
-
 .order-table {
 	border-collapse: collapse;
 	/*width: auto;*/
 	margin-bottom: 0;
 	border: none;
 }
-
 .order-table .order-table-tr {
 	/*display: flex; !* Используем Flexbox *!*/
     /*align-items: flex-start; !* Вертикальное выравнивание *!*/
@@ -1542,7 +1512,6 @@ input[readonly]:active {
 	width: auto; /* Позволяем ячейкам адаптироваться */
 
 }
-
 .order-table-items {
 	font-size: 15px;
 	font-weight: 500;
@@ -1561,7 +1530,6 @@ input[readonly]:active {
     align-items: center;    /* По вертикали */
     height: 100%;           /* Убедитесь, что высота заполнена */
 }
-
 .order-table-label {
 	position: absolute;
 	margin-top: 50px; /* Размещаем лейбл внизу */
@@ -1639,7 +1607,6 @@ input[readonly]:active {
     padding: 0; /* Минимизируем отступы в теле аккордеона */
     margin-top: 5px; /* Добавляем отступ сверху для удобочитаемости */
 }
-
 /* Общие ошибки формы */
 .form-errors {
     color: #ff0000; /* Красный цвет */
@@ -1647,7 +1614,6 @@ input[readonly]:active {
 	line-height: 21px;
     margin-bottom: 10px;
 }
-
 /* Ошибки конкретного поля */
 .error-message {
     color: #ff0000; /* Красный цвет */
@@ -1655,13 +1621,11 @@ input[readonly]:active {
 	line-height: 21px;
     margin-top: 0;
 }
-
 /* Анимация для скрытия ошибки */
 .fade-out {
     animation: fadeOut 1s forwards;
     animation-delay: 9s; /* Задержка перед исчезновением */
 }
-
 @keyframes fadeOut {
     to {
         opacity: 0;
@@ -1671,5 +1635,284 @@ input[readonly]:active {
 .order-left-container label {
 	padding-right: 3px;
 }
-
 /*Заказы*/
+
+/*Статус заказа*/
+.order-status-container {
+	display: flex; /* Используем flexbox */
+    justify-content: right; /* Центрируем содержимое по горизонтали */
+	flex-direction: column;
+}
+.order-status-table .order-status-table-title {
+	text-align: center;
+	font-weight: 550;
+}
+.order-status-table td.paid {
+	color: #006b1b;
+	font-weight: 600;
+}
+.order-status-table td.not-paid {
+	color: red;
+	font-weight: 600;
+}
+.order-status-table button.order-articles-key {
+	font-size: 18px;
+	line-height: 27px;
+	font-weight: 400;
+}
+.payment-button-container {
+	display: flex;
+	justify-content: center;
+}
+.payment-button-container .payment-button {
+	margin-top: 6px;
+	width: 300px;
+	height: 45px;
+	border-radius: 4px;
+	color: white;
+	/*border: 1px solid rgb(143, 153, 153);*/
+	border: 1px solid #D7B35E;
+	background: #D8BB76;
+	font-size: 17px;
+	font-weight: 500;
+	line-height: 26px;
+}
+.payment-button-container .payment-button:hover {
+	background: #D8BB76;
+	border: 1px solid #D7B35E;
+	color: #333333; /* Белый текст при наведении */
+}
+/*Статус заказа*/
+
+/*Оплата заказа*/
+.button-redirect-to-order-status {
+	/*margin-top: 6px;*/
+	width: 300px;
+	height: 45px;
+	border-radius: 4px;
+	color: white;
+	border: 1px solid #D7B35E;
+	background: #D8BB76;
+	font-size: 17px;
+	font-weight: 500;
+	text-align: center;
+	display: inline-block; /* Чтобы ширина и высота работали */
+	line-height: 45px; /* Равняется высоте для вертикального центрирования */
+	text-decoration: none; /* Убирает подчеркивание */
+	transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Плавные эффекты */
+}
+.button-redirect-to-order-status:hover {
+	background: #D8BB76;
+	border-color: #D7B35E;
+	color: #333333; /* Текст при наведении */
+	text-decoration: none; /* Убирает подчеркивание на hover */
+}
+/*Оплата заказа*/
+
+/*Регистрация и аутентификация покупателей*/
+.register-modal {
+	display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Фон */
+    overflow-y: auto; /* Разрешаем прокрутку */
+    z-index: 1000; /* Поверх всего */
+    justify-content: center;
+    align-items: start;
+
+}
+.register-modal-container {
+	margin-top: 10%; /* Отступ сверху */
+    max-height: 90vh; /* Максимальная высота */
+    background: white;
+    width: 450px;
+	height: auto;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /*position: relative;*/
+}
+.register-modal-container .tabs {
+    display: flex;
+	padding: 0;
+    margin: 0;
+    justify-content: space-evenly;
+    width: 100%;
+	list-style: none;
+}
+.register-modal-container .tab-button {
+	flex: 1; /* Вкладка будет занимать равную ширину в пределах li */
+    padding: 5px 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 20px;
+	font-weight: 600;
+    color: #888; /* Серый цвет для текста неактивной вкладки */
+    text-align: center;
+	border-bottom: 2px solid transparent; /* Полоска по умолчанию прозрачная */
+}
+.register-modal-container .tab-button.active {
+    color: #D8BB76; /* Цвет текста активной вкладки */
+    border-bottom: 2px solid #D8BB76; /* Полоска активной вкладки */
+}
+.register-modal-container .close-modal {
+    font-size: 1.5em;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+.register-modal-container .modal-body {
+    padding: 15px 20px 5px 20px;
+}
+.register-modal-container .tab-content {
+    display: none;
+}
+.register-modal-container .tab-content.active {
+    display: block;
+}
+.register-modal-container .form-control.invalid {
+    /*border-color: #dc3545;*/
+}
+.register-modal-container .register-form-item,
+.register-modal-container .login-form-item		{
+	margin: 0 !important;
+}
+.register-modal-container .invalid-feedback {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 2px;
+	padding-left: 7px;
+	height: 10px; /* Фиксированная высота для ошибок */
+	display: block !important;
+	line-height: 1; /* Уменьшение межстрочного расстояния */
+}
+.register-modal-container .btn-submit {
+    background-color: #D8BB76;
+	border: 1px solid #D7B35E;
+	border-radius: 4px;
+    color: white;
+	margin-top: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 100%;
+}
+.register-modal-container .btn-submit:hover {
+    background-color: #D8BB76;
+	border: 1px solid #D7B35E;
+	color: #333333; /* Белый текст при наведении */
+}
+.register-modal-container .form-reset-hidden {
+    visibility: hidden; /* Скрываем только содержимое */
+    /*height: 0; !* Обнуляем высоту для скрытия *!*/
+    overflow: hidden; /* Не показывать содержимое */
+}
+/* Новый стиль для центрации текста и кнопки */
+.success-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+}
+.success-message p {
+    margin: 0;  /* Убираем отступы между абзацами */
+    line-height: 2;  /* Минимальное межстрочное расстояние */
+}
+.success-message a {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #D8BB76;
+	border: 1px solid #D7B35E;
+	border-radius: 4px;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+.success-message a:hover {
+	background-color: #D8BB76;
+	border: 1px solid #D7B35E;
+	color: #333333; /* Белый текст при наведении */
+}
+.register-modal-container .form-label {
+	margin-bottom: 0;
+	padding-left: 3px;
+	font-size: 14px;
+}
+.input-group {
+    position: relative;
+}
+.input-group .btn {
+    position: absolute;
+    right: 3%; /* Отступ от правого края */
+    top: 38%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: #666666; /* Серый цвет глазка */
+    font-size: 20px; /* Увеличиваем размер глазка */
+	z-index: 1000;
+}
+/* Стили для иконки */
+.input-group .btn .fa-eye,
+.input-group .btn .fa-eye-slash {
+    color: #666666;  /* Светло-серый цвет глазка */
+}
+/* Поле пароля, с отступом справа, чтобы глазок не перекрывал текст */
+/* Начальный стиль для иконок глазков (светлее) */
+#toggle-password1 i, #toggle-password2 i {
+    color: #bbb; /* Светлый цвет для обычного состояния */
+}
+/* Стиль при нажатии на глазок (когда кнопка нажата) */
+#toggle-password1:active i, #toggle-password2:active i {
+    color: #666666; /* Более темный цвет при нажатии */
+}
+/* Сглаживаем углы для группы ввода с кнопкой */
+.g-recaptcha {
+	margin-top: 5px;
+}
+.g-recaptcha.is-invalid {
+    border: 1px solid #dc3545; /* Красная рамка */
+    border-radius: 4px;
+    padding: 5px;
+}
+.forgot-password-href,
+.back-to-login-href {
+	display: block;
+	text-decoration: none;
+	color: #777777;
+	font-size: 16px;
+	font-weight: 450;
+	margin-top: 15px;
+}
+.back-to-login-href {
+	text-align: center;
+}
+.forgot-password-href:hover,
+.back-to-login-href:hover {
+	color: #333333;
+}
+/* Уведомление: уменьшенная высота и ширина */
+.small-alert-reset-password {
+	width: 80%; /* Уменьшенная ширина */
+    padding: 0; /* Уменьшенные внутренние отступы */
+    font-size: 16px; /* Меньший размер текста */
+    text-align: center; /* Центрирование текста */
+    position: absolute; /* Абсолютное позиционирование внутри модального окна */
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1060; /* Над содержимым модального окна */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень */
+}
+
+
+/*Регистрация в аутентификация покупателей*/

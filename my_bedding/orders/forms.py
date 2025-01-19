@@ -7,10 +7,11 @@ from .models import Order
 
 
 class OrderCreateForm(forms.ModelForm):
+
     class Meta:
         model = Order
-        fields = ['first_name', 'last_name', 'phone', 'email',
-                  'user_address', 'pickup_point_address', 'comment',]
+        fields = ['first_name', 'last_name', 'phone', 'user_address',
+                  'pickup_point_address',]
 
     # def clean_phone(self):
     #     phone = self.cleaned_data['phone']

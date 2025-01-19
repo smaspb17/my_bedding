@@ -23,17 +23,23 @@ INSTALLED_APPS = [
     'debug_toolbar',
     "phonenumber_field",
     "mptt",
+    "django_extensions",
     "django_mptt_admin",
     "users.apps.UsersConfig",
     "shop.apps.ShopConfig",
     "cart.apps.CartConfig",
     "orders.apps.OrdersConfig",
     "coupons.apps.CouponsConfig",
+    "payment.apps.PaymentConfig",
+    "easy_thumbnails",
+    # 'django_recaptcha',
+    # "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    # "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -57,6 +63,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "users.context_processors.auth_forms",
             ],
         },
     },
@@ -96,6 +103,9 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -106,6 +116,89 @@ AUTH_USER_MODEL = "users.User"
 
 CART_SESSION_ID = 'cart'
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+# EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')  # если EMAIL_PORT = 587
+# это значение вставится в поле От кого в письме
+DEFAULT_FROM_EMAIL = f'MyBedding <{os.getenv("EMAIL_HOST_USER")}>'
+
+# SendGrid, Mailgun - иные сервисы
+
+# # стучимся к rabbitmq из ПК в контейнер Docker
+# CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/'
+# # стучимся к redis из ПК в контейнер Docker
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+# # стучимся к redis если Django и redis оба в контейнере Docker
+# CELERY_BROKER_URL = "redis://redis:6379"
+
+# настроечные параметры Redis
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 1
+
+# доп параметры, значения могут быть другими, главное чтобы были
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
+
 # PHONENUMBER_DEFAULT_REGION = 'RU'
 # PHONENUMBER_DB_FORMAT = 'E164'  # Для хранения в международном формате (+7XXXXXXXXXX)
 # PHONENUMBER_DEFAULT_FORMAT = 'E164'
+
+# Stripe settings
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+STRIPE_API_VERSION = os.getenv('STRIPE_API_VERSION')
+STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
+
+# # Robokassa settings
+# ROBOKASSA_MERCHANT_LOGIN = os.getenv('ROBOKASSA_MERCHANT_LOGIN')
+# ROBOKASSA_PASSWORD_1 = os.getenv('ROBOKASSA_PASSWORD_1')
+# ROBOKASSA_PASSWORD_2 = os.getenv('ROBOKASSA_PASSWORD_2')
+# ROBOKASSA_TEST_MODE = os.getenv('ROBOKASSA_TEST_MODE')
+# ROBOKASSA_PAYMENT_URL = os.getenv('ROBOKASSA_PAYMENT_URL')
+
+# CORS_ALLOW_ALL_ORIGINS = True  # Разрешить все домены (для разработки)
+# CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOWED_ORIGINS = [
+#     # "https://example.com",
+#     # "https://sub.example.com",
+#     "http://localhost:9000",
+#     "http://127.0.0.1:9000",
+#     "http://gc.kis.v2.scr.kaspersky-labs.com",
+# ]
+# CORS_ORIGIN_WHITELIST = (
+#     "http://localhost:9000",
+#     "http://127.0.0.1:9000",
+#     "http://gc.kis.v2.scr.kaspersky-labs.com",
+# )
+
+
+# Ускоряет процесс хэширования (для тестов)
+# if DEBUG:
+#     PASSWORD_HASHERS = [
+#         'django.contrib.auth.hashers.MD5PasswordHasher',
+#     ]
+
+# классическая RECAPTCHA
+RECAPTCHA_SITE_KEY = os.getenv('RECAPTCHA_SITE_KEY')
+RECAPTCHA_SECRET_KEY = os.getenv('RECAPTCHA_SECRET_KEY')
+
+# if DEBUG:
+#     SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
+
+# # django-recaptcha
+# RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
+# RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
+
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'avatar': {'size': (150, 150), 'crop': True},
+    },
+}

@@ -3,13 +3,13 @@
 ORDER_STATUS = [
     ('Created', 'Оформлен'),
     ('In progress', 'Выполняется'),
-    ('In transit', 'В пути'),
+    ('In transit', 'Передан в доставку'),
     ('Completed', 'Завершен'),
 ]
 # статус оплаты
 PAYMENT_STATUS = [
     ('Not paid', 'Не оплачен'),
-    ('Partially paid', 'Оплачен частично'),
+    # ('Partially paid', 'Оплачен частично'),
     ('Paid', 'Оплачен'),
 ]
 TRANSPORT_COMPANY = [

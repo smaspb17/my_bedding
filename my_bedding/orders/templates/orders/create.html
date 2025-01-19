@@ -92,27 +92,6 @@
 									</div>
 								</div>
 
-{#							<div class="order-accordion-header" id="order-items-header">#}
-{#								#}
-{#								<span class="order-accordion-arrow">&#9660;</span>#}
-{#							</div>#}
-
-
-
-{#							<div class="order-accordion-body" id="order-items-body">#}
-
-{#							</div>#}
-
-
-
-{#							{% for item in cart_items %}#}
-{#								{{ item }}#}
-{#								{{ item.article.product.title }}, арт.№ {{ item.article.article }}#}
-{#								<br><br>#}
-{#							{% endfor %}#}
-
-
-
 						</div>
 					</div>
 
@@ -149,11 +128,11 @@
 {#						<label for="email">E-mail:</label>#}
 {#						<input type="email" id="email" name="email"#}
 {#							   value="{{ form.email.value|default_if_none:'' }}" required>#}
-						{{ form.email.label_tag }}
-						{% if form.email.errors %}
-                            <span class="error-message">{{ form.email.errors.0 }}</span>
-                        {% endif %}
-                        {{ form.email }}
+{#						{{ form.email.label_tag }}#}
+{#						{% if form.email.errors %}#}
+{#                            <span class="error-message">{{ form.email.errors.0 }}</span>#}
+{#                        {% endif %}#}
+{#                        {{ form.email }}#}
 
 	{#					<label for="index">Индекс доставки:</label>#}
 	{#					<input type="text" id="index" name="index" maxlength="6" required>#}
@@ -239,9 +218,17 @@
 						</div>
 
 						<div class="order-final-price-links">
-							<button type="submit" class="order-final-price-place-order" id="order-button">
-								Оформить заказ
-							</button>
+{#							<input type="hidden" id="user-authenticated" value="{% if user.is_authenticated %}true{% else %}false{% endif %}">#}
+							{% if user.is_authenticated %}
+								<button type="submit" class="order-final-price-place-order" id="order-button">
+									Оформить заказ
+								</button>
+							{% else %}
+								<button type="button" class="open-modal-btn">
+									Оформить заказ
+								</button>
+							{% endif %}
+
 							{#						<p class="cart-final-price-continue-shopping">#}
 							{#							<a href="{% url 'shop:product_list' %}">Продолжить покупки</a>#}
 							{#						</p>#}
@@ -251,7 +238,6 @@
 			</div>
 		</form>
 	</div>
-
 <script>
     function formatSelected(suggestion) {
         if (suggestion.data.postal_code) {
@@ -377,6 +363,32 @@
 	        }
 	});
 </script>
+{#<script>#}
+{#	document.getElementById('order-button').addEventListener('click', function(event) {#}
+	    {#event.preventDefault(); // Отключить стандартную отправку формы#}
+{##}
+{#	    const form = document.querySelector('.order-styled-form');#}
+{#	    const formData = new FormData(form);#}
+{##}
+{#	    fetch(form.action, {#}
+{#	        method: 'POST',#}
+{#	        body: formData,#}
+{#	        headers: {#}
+{#	            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value#}
+{#	        }#}
+{#	    })#}
+{#	    .then(response => {#}
+{#	        if (response.status === 401) {#}
+{#	            // Если пользователь не аутентифицирован, показываем модальное окно#}
+{#	            document.getElementById('authModal').style.display = 'flex';#}
+{#	        }#}
+{#	    })#}
+{#	    .catch(error => {#}
+{#	        console.error('Ошибка обработки fetch-запроса у заказа:', error);#}
+{#	    });#}
+{#	});#}
+{#</script>#}
+
 {#<script>#}
 {#    document.addEventListener('DOMContentLoaded', function () {#}
 {#        // Находим все элементы с ошибками#}

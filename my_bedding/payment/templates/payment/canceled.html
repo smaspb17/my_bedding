@@ -1,0 +1,19 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Оплата не выполнена{% endblock %}
+
+{% block content %}
+	<div class="payment-canceled-container container">
+		<h4>Оплата не выполнена</h4>
+		<p>Возникли проблемы при проведении платежа</p>
+		<a href="{% url 'orders:order_status' order_id %}" class="button-redirect-to-order-status">
+			На страницу заказа
+		</a>
+	</div>
+
+
+{#	<p>Вы можете вернуться#}
+{#		<a href="{% url 'orders:order_status' order_id %}">на страницу заказа</a>#}
+{#		для повторения процедуры оплаты</p>#}
+
+{% endblock %}

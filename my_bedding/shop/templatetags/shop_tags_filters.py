@@ -1,6 +1,10 @@
+import locale
+
 from django import template
+from datetime import datetime
 
 from coupons.models import Coupon
+
 
 register = template.Library()
 
@@ -57,3 +61,20 @@ def pluralize_ru(value, arg=''):
         return f"{value} {words[1]}"
     else:
         return f"{value} {words[2]}"
+
+
+# Список месяцев на русском языке
+MONTHS_RU = [
+    'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+    'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+]
+
+
+@register.filter
+def format_date_rus(value):
+    if isinstance(value, datetime):
+        day = value.day
+        month = MONTHS_RU[value.month - 1]  # Месяцы начинаются с 0
+        year = value.year
+        return f"{day} {month} {year} г."
+    return value

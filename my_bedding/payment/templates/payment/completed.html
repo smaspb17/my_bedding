@@ -1,0 +1,13 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Успешная оплата{% endblock %}
+
+{% block content %}
+	<div class="payment-completed-container container">
+		<h4>Успешная оплата</h4>
+		<p>Оплата по Вашему заказу успешно выполнена</p>
+		<a href="{% url 'orders:order_status' order_id %}" class="button-redirect-to-order-status">
+			На страницу заказа
+		</a>
+	</div>
+{% endblock %}

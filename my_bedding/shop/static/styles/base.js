@@ -646,5 +646,3 @@ document.addEventListener('DOMContentLoaded', function () {
     calculateTotalPrice();
 });
 
-
-
