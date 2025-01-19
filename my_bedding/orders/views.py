@@ -1,4 +1,7 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.cache import never_cache
+from django.contrib.auth import get_user_model
 
 from cart.cart import Cart
 from coupons.models import Coupon
@@ -6,15 +9,26 @@ from .forms import OrderCreateForm
 from .models import OrderItem, Order
 from .tasks import order_created
 
+User = get_user_model()
 
+
+@never_cache
 def order_create(request):
     cart = Cart(request)
+    if not cart or len(cart) == 0:
+        return redirect('cart:cart-detail')  # Перенаправление на страницу корзины
     cart_items = [item for item in cart]
     if request.method == 'POST':
         form = OrderCreateForm(request.POST)
-
         if form.is_valid():
-            order = form.save()
+            order = form.save(commit=False)
+            user = request.user
+            # if not user.is_authenticated:
+            #     print('Не авторизован!!!')
+            #     return JsonResponse({'authenticated': False}, status=401)
+            order.user = user
+            order.email = user.email
+            order.save()
             for item in cart_items:
                 OrderItem.objects.create(
                     order=order,
@@ -31,11 +45,8 @@ def order_create(request):
             order.save()
             cart.clear()
             request.session['coupon_id'] = None
-            request.session['redirect_source'] = 'order_create'
             # создание асинхронного задания-отправка email
-            # order_created.delay(order.id)
-            # return render(request, 'orders/created.html',
-            #               {'order': order})
+            order_created.delay(order.id)
             return redirect('orders:order_status', order.id)
 
         else:

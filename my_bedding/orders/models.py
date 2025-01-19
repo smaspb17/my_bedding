@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from django.db import models
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from phonenumber_field.modelfields import PhoneNumberField
 
 from cart.cart import Cart
@@ -21,13 +22,17 @@ from .validators import (
 )
 
 
+User = get_user_model()
+
+
 class Order(models.Model):
-    # user = models.ForeignKey(
-    #     settings.AUTH_USER_MODEL,
-    #     on_delete=models.PROTECT,
-    #     related_name='orders',
-    #     verbose_name='Покупатель'
-    # )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name='orders',
+        verbose_name='Оформил заказ',
+        null=True
+    )
     first_name = models.CharField(
         max_length=50,
         validators=[validate_first_name],
@@ -77,7 +82,7 @@ class Order(models.Model):
         blank=True,
         null=True,
     )
-    create_date = models.DateField(
+    create_date = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Дата создания'
     )
@@ -180,6 +185,12 @@ class Order(models.Model):
             # пусть stripe для настоящих платежей
             path = '/'
         return f'https://dashboard.stripe.com{path}payments/{self.stripe_id}'
+
+    def get_total_quantity_items(self):
+        return sum(item.quantity for item in self.items.all())
+
+    def status_view(self):
+        return self.get_status_display()
 
 
 class OrderItem(models.Model):

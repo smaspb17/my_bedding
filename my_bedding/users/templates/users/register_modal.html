@@ -1,0 +1,562 @@
+﻿<!-- Модальное окно -->
+<div id="authModal" class="modal-overlay register-modal">
+    <div class="modal-container register-modal-container">
+        <div class="modal-header">
+            <ul class="tabs">
+                <li><button class="tab-button" data-tab="register">Регистрация</button></li>
+	            <li><button class="tab-button active" data-tab="login">Вход</button></li>
+            </ul>
+{#            <button class="close-modal" id="closeModal">&times;</button>#}
+        </div>
+        <div class="modal-body">
+	        <!-- Уведомление об отправке письма по изменению пароля -->
+			<div id="alert-password-reset" class="mt-3"></div>
+            <!-- Форма регистрации -->
+            <div class="tab-content" id="register">
+                <form id="register-form" method="post">
+                    {% csrf_token %}
+                    <!-- Имя -->
+                    <div class="mb-3 register-form-item">
+                        <label for="id_first_name" class="form-label">Имя</label>
+                        <input
+	                        type="text"
+{#	                        class="form-control {% if reg_form.first_name.errors %}is-invalid{% endif %}"#}
+	                        class="form-control"
+	                        id="id_first_name"
+	                        name="first_name"
+	                        value="{{ reg_form.first_name.value|default:'' }}">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <!-- Email -->
+                    <div class="mb-3 register-form-item">
+                        <label for="id_email" class="form-label">Email</label>
+                        <input
+	                        type="email"
+{#	                        class="form-control {% if reg_form.email.errors %}is-invalid{% endif %}"#}
+	                        class="form-control"
+	                        id="id_email"
+	                        name="email"
+	                        value="{{ reg_form.email.value|default:'' }}">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <!-- Пароль -->
+                    <div class="mb-3 register-form-item">
+                        <label for="id_password" class="form-label">Пароль</label>
+                        <div class="input-group">
+                            <input
+	                            type="password"
+{#	                            class="form-control {% if reg_form.password.errors %}is-invalid{% endif %} password-field" #}
+	                            class="form-control password-field"
+	                            id="id_password"
+	                            name="password">
+                            <div class="invalid-feedback"></div>
+	                        <button type="button" class="btn" id="toggle-password1">
+                                <i class="fa fa-eye"></i> <!-- Иконка глазка -->
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Повторите пароль -->
+                    <div class="mb-3 register-form-item">
+                        <label for="id_password2" class="form-label">Повторите пароль</label>
+                        <div class="input-group">
+                            <input
+	                            type="password"
+{#	                            class="form-control {% if reg_form.password2.errors %}is-invalid{% endif %} password-field" #}
+	                            class="form-control password-field"
+	                            id="id_password2"
+	                            name="password2">
+	                        <div class="invalid-feedback"></div>
+	                        <button type="button" class="btn" id="toggle-password2">
+                                <i class="fa fa-eye"></i> <!-- Иконка глазка -->
+                            </button>
+                        </div>
+                    </div>
+                    <!-- reCAPTCHA "Я не робот" -->
+					<div class="mb-3 register-form-item">
+{#						{{ reg_form.captcha }}#}
+						<div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
+						<input
+							type="hidden"
+							class="form-control g-recaptcha-input"
+							name="captcha">
+						<div class="invalid-feedback"></div>
+					</div>
+                    <button type="submit" class="btn-submit">
+					    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+					    <span class="button-text">Зарегистрироваться</span>
+                    </button>
+                </form>
+            </div>
+            <!-- Форма входа -->
+            <div class="tab-content active" id="login">
+                <form action="{% url 'users:login' %}" id="login-form" method="post">
+                    {% csrf_token %}
+                    <!-- Email -->
+                    <div class="mb-3 login-form-item">
+                        <label for="id_email" class="form-label">Email</label>
+                        <input
+	                        type="email"
+{#	                        class="form-control {% if login_form.email.errors %}is-invalid{% endif %}"#}
+	                        class="form-control"
+	                        id="id_email"
+	                        name="email"
+	                        value="{{ login_form.email.value|default:'' }}">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <!-- Пароль -->
+                    <div class="mb-3 login-form-item">
+                        <label for="id_password" class="form-label">Пароль</label>
+                        <div class="input-group">
+                            <input
+	                            type="password"
+{#	                            class="form-control {% if reg_form.password.errors %}is-invalid{% endif %} password-field"#}
+	                            class="form-control password-field"
+	                            id="id_password"
+	                            name="password">
+	                        <div class="invalid-feedback"></div>
+	                        <button type="button" class="btn" id="toggle-password1">
+                                <i class="fa fa-eye"></i> <!-- Иконка глазка -->
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-submit">
+	                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                        <span class="button-text">Войти</span>
+                    </button>
+                </form>
+	            <a href="#" class="forgot-password-href" id="show-password-reset-form">Забыли пароль?</a>
+            </div>
+	        <!-- Форма восстановления пароля -->
+			<div class="tab-content" id="password-reset" style="display: none;">
+			    <form action="{% url 'users:password_reset' %}" id="password-reset-form" method="post">
+			        {% csrf_token %}
+			        <div class="mb-3">
+			            <label for="id_email_reset" class="form-label">Введите ваш Email для восстановления пароля</label>
+			            <input
+			                type="email"
+			                class="form-control"
+			                id="id_email_reset"
+			                name="email">
+			            <div class="invalid-feedback"></div>
+			        </div>
+			        <button type="submit" class="btn-submit">
+			            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+			            <span class="button-text">Сбросить пароль</span>
+			        </button>
+			    </form>
+			    <a href="#" class="back-to-login-href" id="back-to-login">Назад</a>
+			</div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+function showAlertPasswordReset(message, type) {
+    // Создаем HTML для уведомления
+    const alertHTML = `
+    <div class="alert alert-${type} fade show small-alert-reset-password" role="alert">
+        ${message}
+    </div>`;
+    const alertContainer = document.getElementById('alert-password-reset');
+    alertContainer.innerHTML = alertHTML;
+
+    // Убираем уведомление через 4 секунды
+    setTimeout(() => {
+        const alertElement = alertContainer.querySelector('.alert');
+        if (alertElement) {
+            alertElement.classList.remove('show');
+            alertElement.classList.add('fade');
+            setTimeout(() => alertElement.remove(), 500);
+        }
+    }, 5000);
+}
+
+// Глобальная функция обновления токена
+function getCSRFToken() {
+    const csrfInput = document.querySelector('input[name="csrfmiddlewaretoken"]');
+    return csrfInput ? csrfInput.value : '';
+}
+
+// Инициализация функционала при загрузке страницы
+document.addEventListener('DOMContentLoaded', function () {
+    const loginForm = document.getElementById('login');
+    const passwordResetForm = document.getElementById('password-reset');
+    const registrationForm = document.getElementById('register');
+    const showPasswordResetLink = document.getElementById('show-password-reset-form');
+    const backToLoginLink = document.getElementById('back-to-login');
+    const tabs = document.querySelectorAll('.tab-button'); // Кнопки вкладок
+    const tabContents = document.querySelectorAll('.tab-content'); // Содержимое вкладок
+
+    // Показ формы восстановления пароля
+    showPasswordResetLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        loginForm.style.display = 'none';
+        passwordResetForm.style.display = 'block';
+    });
+
+    // Возврат к форме входа
+    backToLoginLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        passwordResetForm.style.display = 'none';
+        loginForm.style.display = 'block';
+    });
+
+	// После загрузки страницы или при закрытии/открытии окна, восстанавливаем активное состояние вкладки "Вход"
+    loginForm.style.display = 'block';
+    passwordResetForm.style.display = 'none';
+    document.querySelector('[data-tab="login"]').classList.add('active');
+    document.querySelector('[data-tab="register"]').classList.remove('active');
+
+	// Инициализация обработчиков отправки форм
+	initRegisterFormSubmit();
+    initLoginFormSubmit();
+    initPasswordResetFormSubmit();
+});
+
+// Функция для обработки формы регистрации
+function initRegisterFormSubmit() {
+    const registerForm = document.getElementById('register-form');
+    if (!registerForm) return;
+
+    registerForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const container = registerForm.closest('.tab-content');
+        resetFormErrors(container);
+
+        const formData = new FormData(registerForm);
+        const submitButton = registerForm.querySelector('.btn-submit');
+        const spinner = submitButton.querySelector('.spinner-border');
+        const buttonText = submitButton.querySelector('.button-text');
+
+        spinner.style.display = 'inline-block';
+        buttonText.style.display = 'none';
+
+        fetch("{% url 'users:register' %}", {
+            method: 'POST',
+            headers: { 'X-CSRFToken': getCSRFToken() },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            spinner.style.display = 'none';
+            buttonText.style.display = 'inline-block';
+
+            if (data.success) {
+                updateCsrfToken();
+                redirectAfterAuth();
+                updateOrderButton();
+            } else {
+                handleFormErrors(data.errors, container);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при отправке формы регистрации:', error);
+            spinner.style.display = 'none';
+            buttonText.style.display = 'inline-block';
+        });
+    });
+}
+
+// Функция для обработки формы входа
+function initLoginFormSubmit() {
+    const loginForm = document.getElementById('login-form');
+    if (!loginForm) return;
+
+    loginForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const container = loginForm.closest('.tab-content');
+        resetFormErrors(container);
+
+        const formData = new FormData(loginForm);
+        const submitButton = loginForm.querySelector('.btn-submit');
+        const spinner = submitButton.querySelector('.spinner-border');
+        const buttonText = submitButton.querySelector('.button-text');
+
+        spinner.style.display = 'inline-block';
+        buttonText.style.display = 'none';
+
+        fetch("{% url 'users:login' %}", {
+            method: 'POST',
+            headers: { 'X-CSRFToken': getCSRFToken() },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            spinner.style.display = 'none';
+            buttonText.style.display = 'inline-block';
+
+            if (data.success) {
+                updateCsrfToken();
+                redirectAfterAuth();
+                updateOrderButton();
+            } else {
+                handleFormErrors(data.errors, container);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при отправке формы входа:', error);
+            spinner.style.display = 'none';
+            buttonText.style.display = 'inline-block';
+        });
+    });
+}
+
+// Функция для обработки формы восстановления пароля
+function initPasswordResetFormSubmit() {
+    const passwordResetForm = document.getElementById('password-reset-form');
+    const passwordResetContainer = document.getElementById('password-reset');
+    const loginContainer = document.getElementById('login');
+    if (!passwordResetForm) return;
+
+    passwordResetForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const container = passwordResetForm.closest('.tab-content');
+        resetFormErrors(container);
+
+        const formData = new FormData(passwordResetForm);
+        const submitButton = passwordResetForm.querySelector('.btn-submit');
+        const spinner = submitButton.querySelector('.spinner-border');
+        const buttonText = submitButton.querySelector('.button-text');
+
+        spinner.style.display = 'inline-block';
+        buttonText.style.display = 'none';
+
+        fetch("{% url 'users:password_reset' %}", {
+            method: 'POST',
+            headers: { 'X-CSRFToken': getCSRFToken() },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            spinner.style.display = 'none';
+            buttonText.style.display = 'inline-block';
+
+            if (data.success) {
+                passwordResetContainer.classList.add('form-reset-hidden');
+                showAlertPasswordReset('На указанный Вами email отправлено письмо для сброса пароля', 'success');
+                // Ждем окончания показа сообщения (5 секунд) и показываем форму входа
+                setTimeout(() => {
+                    clearFormData()
+	                passwordResetContainer.classList.remove('form-reset-hidden');
+                    passwordResetContainer.style.display = 'none';
+                    {#loginContainer.style.display = 'block';#}
+
+                    closeModal()
+                }, 5000);
+            } else {
+                handleFormErrors(data.errors, container);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при отправке формы восстановления пароля:', error);
+            spinner.style.display = 'none';
+            buttonText.style.display = 'inline-block';
+        });
+    });
+}
+
+// Функция сброса ошибок формы
+function resetFormErrors(container) {
+    container.querySelectorAll('.invalid-feedback').forEach(feedback => {
+        feedback.textContent = '';
+    });
+    container.querySelectorAll('.form-control').forEach(input => {
+        input.classList.remove('is-invalid');
+    });
+}
+
+ // Общая функция очистки данных формы
+function clearFormData() {
+    document.querySelectorAll('form').forEach(form => {
+        form.reset();
+    });
+}
+
+// Открытие модального окна для всех кнопок с классом .open-modal-btn
+const openModalButtons = document.querySelectorAll('.open-modal-btn');
+	openModalButtons.forEach(button => {
+	    button.addEventListener('click', (event) => {
+		    const loginForm = document.getElementById('login');
+            const passwordResetForm = document.getElementById('password-reset');
+            const registerForm = document.getElementById('register');
+
+		    passwordResetForm.style.display = 'none';
+			registerForm.style.display = 'none'
+            loginForm.style.display = 'block';
+
+            // Обновить активные вкладки
+	        document.querySelector('[data-tab="login"]').classList.add('active');
+	        document.querySelector('[data-tab="register"]').classList.remove('active');
+
+            // Открыть модальное окно
+	        document.getElementById('authModal').style.display = 'flex';
+	    });
+	});
+
+// Функция закрытия модального окна
+function closeModal() {
+    const modal = document.getElementById('authModal');
+    const forms = modal.querySelectorAll('form');
+    // Скрыть модальное окно
+    modal.style.display = 'none';
+
+    // Очистить все формы
+    forms.forEach((form) => {
+        form.reset();
+    });
+
+    // Удалить все ошибки с форм
+    const feedbacks = modal.querySelectorAll('.invalid-feedback');
+    feedbacks.forEach((feedback) => {
+        feedback.textContent = ''; // Очистить сообщения об ошибках
+    });
+
+    // Сброс капчи
+	grecaptcha.reset();
+}
+
+// Закрытие модального окна при клике вне контейнера
+const modalOverlay = document.querySelector('.modal-overlay');
+    modalOverlay.addEventListener('click', (event) => {
+        const modalContainer = document.querySelector('.modal-container');
+        if (!modalContainer.contains(event.target)) {
+            closeModal();
+        }
+    });
+
+
+// Переключение вкладок
+document.querySelectorAll('.tab-button').forEach(button => {
+    // Добавляем обработчик клика для каждой кнопки
+    button.addEventListener('click', (e) => {
+        // Получаем имя активной вкладки из атрибута data-tab
+        const tabName = e.target.dataset.tab;
+
+        // Находим все кнопки вкладок
+        const tabButtons = document.querySelectorAll('.tab-button');
+
+        // Убираем класс 'active' у всех кнопок вкладок
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+
+        // Добавляем класс 'active' к текущей кнопке
+        e.target.classList.add('active');
+
+        // Находим все формы (вкладки)
+        const forms = document.querySelectorAll('.tab-content');
+
+        // Прячем все формы
+        forms.forEach(form => form.style.display = 'none');
+
+        // Показываем форму для выбранной вкладки
+        const activeForm = document.getElementById(tabName);
+        activeForm.style.display = 'block';
+    });
+});
+
+// Общая функция для отображения ошибок формы
+function handleFormErrors(errors, container) {
+    for (const field in errors) {
+        const input = container.querySelector(`[name="${field}"]`);
+        if (input) {
+            const feedback = input.nextElementSibling;
+            if (feedback) {
+                feedback.textContent = errors[field].join(', ');
+                {#input.classList.add('is-invalid');#}
+                input.classList.add('invalid');
+            }
+        } else if (field === "captcha") {
+            // Обработка ошибок каптчи
+            const captchaContainer = container.querySelector('.g-recaptcha-input');
+            const feedback = captchaContainer.nextElementSibling;
+            if (feedback) {
+                feedback.textContent = errors[field].join(', ');
+                {#captchaContainer.classList.add('is-invalid');#}
+                captchaContainer.classList.add('invalid');
+            }
+        }
+    }
+    // Сброс каптчи, если ошибка не в самой каптче
+    if (!errors.captcha) {
+        const captchaContainer = container.querySelector('.g-recaptcha');
+        if (captchaContainer) {
+            grecaptcha.reset();  // Сбрасываем каптчу
+        }
+    }
+}
+
+// Переменная с текущим путем для редиректа
+const redirectAfterAuth = () => {
+    const currentPath = window.location.pathname;
+    // Если текущая страница - orders/create, то просто закроем модальное окно
+    if (currentPath === '/orders/create/') {
+        // Закрыть модальное окно
+        document.getElementById('authModal').style.display = 'none';
+        return;
+    }
+    // В остальных случаях редирект в личный кабинет
+    window.location.href = "{% url 'users:view_account' %}";
+};
+
+// Обновление
+function updateOrderButton() {
+    const orderButtonContainer = document.querySelector('.order-final-price-links');
+	orderButtonContainer.innerHTML = '<button type="submit" class="order-final-price-place-order" id="order-button">Оформить заказ</button>';
+}
+
+// Обновление csrf-токена
+function updateCsrfToken() {
+fetch("{% url 'users:get_csrf_token' %}")
+    .then(response => response.json())
+    .then(data => {
+        const csrfInputs = document.querySelectorAll('input[name="csrfmiddlewaretoken"]');
+        csrfInputs.forEach(input => {
+            input.value = data.csrfToken;
+        });
+        console.log('CSRF токен обновлен:', data.csrfToken);
+    })
+    .catch(error => {
+        console.error('Ошибка при обновлении CSRF токена:', error);
+    });
+}
+
+</script>
+
+{#<!-- Глазок в поле пароля -->#}
+<script>
+
+// Для первого поля пароля
+const passwordField1 = document.getElementById('id_password');
+const toggleButton1 = document.getElementById('toggle-password1');
+const eyeIcon1 = toggleButton1.querySelector('i');
+
+// Для второго поля пароля
+const passwordField2 = document.getElementById('id_password2');
+const toggleButton2 = document.getElementById('toggle-password2');
+const eyeIcon2 = toggleButton2.querySelector('i');
+
+// Функция для переключения видимости пароля и изменения иконки
+function togglePasswordVisibility(passwordField, toggleButton, eyeIcon) {
+    toggleButton.addEventListener('mousedown', function() {
+        passwordField.type = 'text';  // Показываем пароль
+        eyeIcon.classList.add('fa-eye-slash'); // Меняем иконку
+    });
+
+    toggleButton.addEventListener('mouseup', function() {
+        passwordField.type = 'password';  // Скрываем пароль
+        eyeIcon.classList.remove('fa-eye-slash'); // Возвращаем иконку
+    });
+
+    toggleButton.addEventListener('mouseleave', function() {
+        passwordField.type = 'password';  // Скрываем пароль, если глазок уходит за пределы
+        eyeIcon.classList.remove('fa-eye-slash');
+    });
+}
+
+// Инициализируем оба поля пароля
+togglePasswordVisibility(passwordField1, toggleButton1, eyeIcon1);
+togglePasswordVisibility(passwordField2, toggleButton2, eyeIcon2);
+
+</script>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>

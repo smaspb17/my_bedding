@@ -38,7 +38,7 @@
 						<div class="accordion-item order-articles">
 							<span class="accordion-header">
 								<button class="accordion-button collapsed order-articles-key" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrder" aria-expanded="false" aria-controls="collapseOne-{{ article.article }}">
-									Товары в заказе ({{ order_items|length|pluralize_ru:"товар,товара,товаров" }})
+									Товары в заказе ({{ order.get_total_quantity_items|pluralize_ru:"товар,товара,товаров" }})
 								</button>
 							</span>
 							<div id="collapseOrder" class="accordion-collapse collapse" data-bs-parent="#accordionOrderExample">
@@ -113,13 +113,21 @@
 				</td>
 			</tr>
 			<tr>
-						<td>
-							Транспортная компания
-						</td>
-						<td>
-							{{ transport_company }}
-						</td>
-					</tr>
+				<td>
+					Получатель, телефон
+				</td>
+				<td>
+					{{ order.last_name }} {{ order.first_name }}, {{ order.phone }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Транспортная компания
+				</td>
+				<td>
+					{{ transport_company }}
+				</td>
+			</tr>
 			<tr>
 						<td>
 							Пункт выдачи заказа

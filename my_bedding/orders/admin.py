@@ -14,7 +14,7 @@ class OrderItemInlineAdmin(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     # form = OrderAdminForm
-    fields = ['first_name', 'last_name', 'phone', 'email',
+    fields = ['user', 'first_name', 'last_name', 'phone', 'email',
               'user_address', 'transport_company', 'pickup_point_address',
               'create_date', 'status', 'payment', 'coupon', 'discount_percentage',
               'total_cost', 'discount', 'delivery_cost', 'total_cost_after_discount']
@@ -36,3 +36,11 @@ class OrderAdmin(admin.ModelAdmin):
             html = f'<a href="{url}" target="_blank">{obj.stripe_id}</a>'
             return mark_safe(html)
         return ''
+
+    @staticmethod
+    def user(obj):
+        return obj.user.id
+
+
+
+

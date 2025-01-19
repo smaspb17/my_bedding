@@ -3,6 +3,7 @@ from django.shortcuts import render, HttpResponseRedirect, redirect, \
     get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
 from coupons.forms import CouponForm
@@ -72,6 +73,7 @@ def cart_remove(request, article):
     return JsonResponse({'message': 'Товар удален из корзины', 'success': True})
 
 
+@never_cache
 def cart_detail(request):
     cart = Cart(request)
     coupon_apply_form = CouponForm()

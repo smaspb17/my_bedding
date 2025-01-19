@@ -11,6 +11,7 @@ urlpatterns = [
     path('coupons/', include('coupons.urls', namespace='coupons')),
     path('payment/', include('payment.urls', namespace='payment')),
     path('__debug__/', include('debug_toolbar.urls')),
+    path('users/', include('users.urls', namespace='users')),
 ]
 
 if settings.DEBUG:
