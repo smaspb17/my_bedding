@@ -1,4 +1,7 @@
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
+from django.template.loader import render_to_string
 
 from cart.cart import Cart
 from shop.models import Product, Category
@@ -13,14 +16,36 @@ def catalog_list(request):
 def product_list(request, cat_slug=None):
     products = Product.objects.filter(is_available=True)
     cart = request.session.get('cart', {})
+    context = {'products': products, 'cart': cart}
+
     if cat_slug:
         category = get_object_or_404(Category, slug=cat_slug)
-        products = products.filter(category=category)
-        return render(request, 'shop/product/list.html',
-                      {'products': products, 'category': category,
-                       'cart': cart})
-    return render(request, 'shop/product/list.html',
-                  {'products': products, 'cart': cart})
+        descendant_categories = category.get_children()  # Получаем дочерние категории
+        all_categories = [category] + list(descendant_categories)
+        products = products.filter(category__in=all_categories)  # Фильтруем продукты по категориям
+        context.update({'category': category, 'products': products})
+
+        # Пагинация: 8 товаров на страницу
+    paginator = Paginator(products, 16)
+    page_number = request.GET.get('page', 1)
+    try:
+        page = paginator.get_page(page_number)
+    except (PageNotAnInteger, EmptyPage):
+        page = paginator.page(1)
+
+    context.update({'products': page})
+
+    return render(request, 'shop/product/list.html', context)
+
+
+
+
+    # if request.headers.get('x-requested-with') == 'XMLHttpRequest':  # Проверка AJAX-запроса
+    #     html = render_to_string('shop/product/_product_cards.html', context=context, request=request)
+    #     return JsonResponse({'html': html, 'has_next': page.has_next()})
+
+
+
 
 
 def product_detail(request, cat_slug, product_id):

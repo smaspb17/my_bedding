@@ -39,7 +39,8 @@ class CategoryAdmin(DjangoMpttAdmin):
 
 class ProductImageAdmin(admin.StackedInline):
     model = ProductImage
-    fields = ['size', 'image']
+    fields = ['image']
+    extra = 7  # Количество пустых форм для добавления
 
 
 class ProductParamAdmin(admin.StackedInline):

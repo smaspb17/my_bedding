@@ -64,6 +64,8 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "users.context_processors.auth_forms",
+                "shop.context_processors.site_name",
+                "shop.context_processors.category_list",
             ],
         },
     },
@@ -202,3 +204,5 @@ THUMBNAIL_ALIASES = {
         'avatar': {'size': (150, 150), 'crop': True},
     },
 }
+
+SITE_NAME = "MyBedding"

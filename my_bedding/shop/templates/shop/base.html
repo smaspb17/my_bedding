@@ -21,71 +21,162 @@
 	<script src="{% static 'styles/medium-zoom.min.js' %}"></script>
 	<link rel="stylesheet" href="{% static 'styles/hystmodal.min.css' %}">
 	<link rel="stylesheet" href="{% static 'styles/photoswipe.css' %}"> <!-- PhotoSwipe -->
+	<script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="{% static 'styles/base.css' %}">
 	<script src="{% static 'styles/base.js' %}"></script>
 </head>
 <body>
-<nav class="navbar sticky-top d-flex align-items-center navbar-expand-sm">
-	<div class="container-fluid">
-		<a class="navbar-brand d-flex align-items-center" href="{% url 'shop:product_list' %}">
-			<img src="{% static '/site/bootstrap-logo.svg' %}" alt="Logo"> <span>MyBedding</span> </a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav me-auto mb-2 mb-lg-0 top-menu">
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'shop:product_list' %}">Домой</a>
-				</li>
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Сервисы </a>
-					<ul class="dropdown-menu">
-						<li><a class="dropdown-item" href="#">Карта сайта</a></li>
-						<li><a class="dropdown-item" href="#">Новостная RSS-лента</a></li>
-						<li>
-							<hr class="dropdown-divider">
-						</li>
-						<li><a class="dropdown-item" href="{% url 'admin:index' %}">Администратор</a></li>
-					</ul>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link disabled" aria-disabled="true">О сайте</a>
-				</li>
-			</ul>
-			<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-				<li class="nav-item">
-					{% if user.is_authenticated %}
-						<a href="{% url 'users:view_account' %}">
-							<img src="https://img.icons8.com/?size=25&id=j1b8nUSGHfe0&format=png&color=000000" alt="">
-						</a>
-					{% else %}
-						<a href="#" class="open-modal-btn">
-							<img src="https://img.icons8.com/?size=25&id=j1b8nUSGHfe0&format=png&color=000000" alt="">
-						</a>
-					{% endif %}
 
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'cart:cart-detail' %}">
-						<i class="fa-solid fa-cart-shopping"></i>
-					</a>
-				</li>
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
-						<i class="fa-solid fa-magnifying-glass"></i> </a>
-					<ul class="dropdown-menu">
-						<li>
-							<form class="d-flex" role="search">
-								<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-								<button class="btn btn-outline-success" type="submit">Search</button>
-							</form>
-						</li>
-					</ul>
-				</li>
-			</ul>
-		</div>
-	</div>
+<nav class="navbar sticky-top d-flex align-items-center navbar-expand-sm">
+    <div class="container-fluid header-nav-container">
+        <!-- Логотип и название сайта -->
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'shop:product_list' %}">
+{#            <img src="{% static '/site/bootstrap-logo.svg' %}" alt="Logo">#}
+            <img src="{% static '/site/icons8-клубок-ниток-100.png' %}" alt="Logo">
+            <span class="site-name">{{ site_name }}</span>
+        </a>
+        <!-- Каталог -->
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link catalog-title" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+	               <img src="https://img.icons8.com/?size=100&id=36389&format=png&color=555555" alt="" class="menu-icon">
+
+	               <span>Каталог</span>
+                </a>
+                <ul class="dropdown-menu">
+					{% for cat in categories %}
+						<li><a class="dropdown-item" href="{% url 'shop:product_list_by_cat' cat.slug %}">
+							{{ cat.title}}
+						</a></li>
+	                {% endfor %}
+                </ul>
+            </li>
+        </ul>
+
+        <!-- Поисковое поле -->
+        <form class="d-flex mx-auto search-form">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <input class="form-control me-2" type="search" placeholder="Найти в каталоге" aria-label="Search">
+        </form>
+
+        <!-- Иконки -->
+        <ul class="navbar-nav ms-auto navbar-nav-icons">
+
+            <!-- Телефон -->
+            <li class="nav-item dropdown navbar-nav-first-icon">
+                <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+{#                    <i class="fa-solid fa-phone"></i> #}
+	                <img src="https://img.icons8.com/?size=100&id=UGjeZAvO94lh&format=png&color=555555" alt="">
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="tel:88000000000" class="dropdown-item">8 800 000 00 00</a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Пользователь -->
+            <li class="nav-item">
+                {% if user.is_authenticated %}
+                <a class="nav-link" href="{% url 'users:view_account' %}">
+{#                    <i class="fa-solid fa-user"></i>#}
+
+	                <img src="https://img.icons8.com/?size=100&id=HGBJpD8HuRmK&format=png&color=555555" alt="">
+{#	                <img src="https://img.icons8.com/?size=100&id=g579xhV5XKDH&format=png&color=555555" alt="">#}
+{#	                <img src="https://img.icons8.com/?size=100&id=gQFqiVQaSZi5&format=png&color=555555" alt="">#}
+                </a>
+                {% else %}
+                <a href="#" class="open-modal-btn nav-link">
+{#                    <i class="fa-solid fa-user"></i>#}
+	                <img src="https://img.icons8.com/?size=100&id=gQFqiVQaSZi5&format=png&color=555555" alt="">
+                </a>
+                {% endif %}
+            </li>
+
+            <!-- Избранное -->
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+{#                    <i class="fa-solid fa-heart"></i>#}
+	                <img src="https://img.icons8.com/?size=100&id=87&format=png&color=555555" alt="">
+                </a>
+            </li>
+
+            <!-- Корзина -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'cart:cart-detail' %}">
+{#                    <i class="fa-solid fa-cart-shopping"></i> #}
+{#	                <img src="https://img.icons8.com/?size=100&id=mlzugiBNw6GO&format=png&color=555555" alt="">#}
+	                <img src="https://img.icons8.com/?size=100&id=P6ZYIof6BwLW&format=png&color=555555" alt="">
+                </a>
+            </li>
+        </ul>
+    </div>
 </nav>
+
+
+{#<nav class="navbar sticky-top d-flex align-items-center navbar-expand-sm">#}
+{#	<div class="container-fluid">#}
+{#		<a class="navbar-brand d-flex align-items-center" href="{% url 'shop:product_list' %}">#}
+{#			<img src="{% static '/site/bootstrap-logo.svg' %}" alt="Logo"> <span>MyBedding</span> </a>#}
+{#		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">#}
+{#			<span class="navbar-toggler-icon"></span>#}
+{#		</button>#}
+{#		<div class="collapse navbar-collapse" id="navbarSupportedContent">#}
+{#			<ul class="navbar-nav me-auto mb-2 mb-lg-0 top-menu">#}
+{#				<li class="nav-item">#}
+{#					<a class="nav-link" href="{% url 'shop:product_list' %}">Домой</a>#}
+{#				</li>#}
+{#				<li class="nav-item dropdown">#}
+{#					<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Сервисы </a>#}
+{#					<ul class="dropdown-menu">#}
+{#						<li><a class="dropdown-item" href="#">Карта сайта</a></li>#}
+{#						<li><a class="dropdown-item" href="#">Новостная RSS-лента</a></li>#}
+{#						<li>#}
+{#							<hr class="dropdown-divider">#}
+{#						</li>#}
+{#						<li><a class="dropdown-item" href="{% url 'admin:index' %}">Администратор</a></li>#}
+{#					</ul>#}
+{#				</li>#}
+{#				<li class="nav-item">#}
+{#					<a class="nav-link disabled" aria-disabled="true">О сайте</a>#}
+{#				</li>#}
+{#			</ul>#}
+{#			<ul class="navbar-nav ms-auto mb-2 mb-lg-0">#}
+{#				<li class="nav-item">#}
+{#					{% if user.is_authenticated %}#}
+{#						<a href="{% url 'users:view_account' %}">#}
+{#							<img src="https://img.icons8.com/?size=25&id=j1b8nUSGHfe0&format=png&color=000000" alt="">#}
+{#						</a>#}
+{#					{% else %}#}
+{#						<a href="#" class="open-modal-btn">#}
+{#							<img src="https://img.icons8.com/?size=25&id=j1b8nUSGHfe0&format=png&color=000000" alt="">#}
+{#						</a>#}
+{#					{% endif %}#}
+{##}
+{#				</li>#}
+{#				<li class="nav-item">#}
+{#					<a class="nav-link" href="{% url 'cart:cart-detail' %}">#}
+{#						<i class="fa-solid fa-cart-shopping"></i>#}
+{#					</a>#}
+{#				</li>#}
+{#				<li class="nav-item dropdown">#}
+{#					<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">#}
+{#						<i class="fa-solid fa-magnifying-glass"></i> </a>#}
+{#					<ul class="dropdown-menu">#}
+{#						<li>#}
+{#							<form class="d-flex" role="search">#}
+{#								<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">#}
+{#								<button class="btn btn-outline-success" type="submit">Search</button>#}
+{#							</form>#}
+{#						</li>#}
+{#					</ul>#}
+{#				</li>#}
+{#			</ul>#}
+{#		</div>#}
+{#	</div>#}
+{#</nav>#}
 
 {% include 'users/register_modal.html' %}
 
@@ -130,54 +221,71 @@
 		<span>{{ product.title }}</span>
 	{% endif %}
 </div>
-{#Модальное окно корзины#}
-{#<div class="modal fade" id="modal-cart" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">#}
-{#	<div class="modal-dialog modal-dialog-centered modal-xl">#}
-{#		<div class="modal-content">#}
-{#			<div class="modal-header bg-secondary text-white">#}
-{#				<h1 class="modal-title fs-5" id="exampleModalLabel">Корзина</h1>#}
-{#				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>#}
-{#			</div>#}
-{#			<div class="modal-body">#}
-{#				<table class="table">#}
-{#					<thead>#}
-{#					<tr>#}
-{#						<th scope="col">№</th>#}
-{#						<th scope="col">Товар</th>#}
-{#						<th scope="col">Цена</th>#}
-{#						<th scope="col">Количество</th>#}
-{#					</tr>#}
-{#					</thead>#}
-{#					<tbody>#}
-{#					<tr>#}
-{#						<th scope="row">1</th>#}
-{#						<td>Товар</td>#}
-{#						<td>100</td>#}
-{#						<td>5</td>#}
-{#					</tr>#}
-{#					<tr>#}
-{#						<th scope="row">2</th>#}
-{#						<td>Товар</td>#}
-{#						<td>100</td>#}
-{#						<td>5</td>#}
-{#					</tr>#}
-{#					<tr>#}
-{#						<th scope="row">3</th>#}
-{#						<td>Товар</td>#}
-{#						<td>100</td>#}
-{#						<td>5</td>#}
-{#					</tr>#}
-{#					</tbody>#}
-{#				</table>#}
-{#			</div>#}
-{#			<div class="modal-footer">#}
-{#				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>#}
-{#				<button type="button" class="btn btn-primary">Save changes</button>#}
-{#			</div>#}
-{#		</div>#}
-{#	</div>#}
-{#</div>#}
+
 {% block content %}{% endblock %}
+
+<footer class="site-footer">
+    <div class="d-flex site-footer-container">
+        <!-- 1 столбец -->
+        <div class="footer-column">
+            <div class="footer-logo">
+                <img src="{% static '/site/icons8-клубок-ниток-100.png' %}" alt="Логотип">
+                <span class="site-name">{{ site_name }}</span>
+            </div>
+            <p class="footer-description footer-description-first">интернет-магазин<br>домашнего текстиля</p>
+            <div class="social-links">
+                <a href="#" class="social-icon"><i class="fa fa-telegram"></i></a>
+                <a href="#" class="social-icon"><i class="fa fa-whatsapp"></i></a>
+                <a href="#" class="social-icon"><i class="fa fa-vk"></i></a>
+                <a href="#" class="social-icon"><i class="fa fa-odnoklassniki"></i></a>
+            </div>
+            <p class="footer-description-2">2025 © MyBedding.ru — интернет-магазин<br>домашнего текстиля. Доставка по всей России.</p>
+        </div>
+
+        <!-- 2 столбец -->
+        <div class="footer-column">
+            <p class="column-title">Покупателям</p>
+	        <div class="column-items">
+	            <a href="#">Способы оплаты</a>
+	            <a href="#">Доставка</a>
+	            <a href="#">Возврат</a>
+	            <a href="#">Публичная оферта</a>
+	            <a href="#">Программа лояльности</a>
+	            <a href="#">Отслеживание заказа</a>
+	        </div>
+        </div>
+
+        <!-- 3 столбец -->
+        <div class="footer-column">
+            <p class="column-title">Компания</p>
+	        <div class="column-items">
+		        <a href="#">О нас</a>
+	            <a href="#">Контакты</a>
+	            <a href="#">Бренды</a>
+	            <a href="#">Политика конфиденциальности</a>
+	            <a href="#">Поставщикам</a>
+	        </div>
+
+        </div>
+
+        <!-- 4 столбец -->
+        <div class="footer-column">
+            <p class="column-title">Контакты</p>
+	        <div class="column-items">
+		        <div class="footer-phone">
+				    <span>Телефон:</span>
+				    <a href="tel:88000000000" class="footer-phone">8 800 000 00 00</a>
+				</div>
+	            <p>Режим работы операторов с 9:00 до 21:00<br>(по московскому времени)</p>
+		        <div class="footer-email">
+			        <span>Email:</span>
+	                <a href="mailto:smaspb17@gmail.com">smaspb17@gmail.com</a>
+		        </div>
+	        </div>
+        </div>
+    </div>
+</footer>
+
 <script type="module">
     import PhotoSwipeLightbox from '{% static '/styles/photoswipe-lightbox.esm.js' %}';
 

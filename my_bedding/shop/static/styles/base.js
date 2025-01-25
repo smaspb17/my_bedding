@@ -113,16 +113,16 @@ document.addEventListener('DOMContentLoaded', function () {
                         'X-CSRFToken': formData.get('csrfmiddlewaretoken')
                     }
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        updateCartState(article, true);
-                        updateCartButtonStatus(productCard, article, true);
-                    } else {
-                        console.error('Ошибка сервера:', data.message);
-                    }
-                })
-                .catch(error => console.error('Ошибка при добавлении в корзину:', error));
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            updateCartState(article, true);
+                            updateCartButtonStatus(productCard, article, true);
+                        } else {
+                            console.error('Ошибка сервера:', data.message);
+                        }
+                    })
+                    .catch(error => console.error('Ошибка при добавлении в корзину:', error));
             });
         }
     }
@@ -135,6 +135,26 @@ document.addEventListener('DOMContentLoaded', function () {
         return price.replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
     }
 });
+
+// Product list - карусель
+$(document).ready(function () {
+    $('.product-images-slider').each(function () {
+        var $slider = $(this);
+        var imageCount = $slider.find('img').length;
+
+        $slider.slick({
+            dots: imageCount > 1, // Показываем dots только если больше одного изображения
+            arrows: false, // Отключаем стрелки
+            infinite: true,
+            speed: 500,
+            slidesToShow: 1,
+            adaptiveHeight: true,
+            fade: true,
+        });
+    });
+});
+
+
 
 // Product detail - Смена размера, цены и комплектации
 document.addEventListener('DOMContentLoaded', function () {
@@ -191,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateCartButtonStatus(productDetailBlock, article, added = false) {
         const cartButtonContainer = productDetailBlock.querySelector('.product-detail-cart-add-container');
 
-         if (added) {
+        if (added) {
             cartButtonContainer.innerHTML = `
                 <button type="button" onclick="window.location.href='/cart/'" class="button-add-to-card in-cart">
                     <span class="text">В корзине</span>
@@ -253,24 +273,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function formatPrice(price) {
         return price.replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
     }
-});
-
-// Product list - карусель
-$(document).ready(function () {
-    $('.product-images-slider').each(function () {
-        var $slider = $(this);
-        var imageCount = $slider.find('img').length;
-
-        $slider.slick({
-            dots: imageCount > 1, // Показываем dots только если больше одного изображения
-            arrows: false, // Отключаем стрелки
-            infinite: true,
-            speed: 500,
-            slidesToShow: 1,
-            adaptiveHeight: true,
-            fade: true,
-        });
-    });
 });
 
 // Product detail - карусель
@@ -413,20 +415,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 'X-CSRFToken': csrfToken
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            const serverDiscountPercentage = parseFloat(data.discount_percentage || 0); // Получаем процент скидки
-            const serverDiscount = (total * serverDiscountPercentage) / 100
-            const serverDiscountCode = data.discount_code || ''; // Получаем код
-            const serverTotalPriceAfterDiscount = total - serverDiscount;
+            .then(response => response.json())
+            .then(data => {
+                const serverDiscountPercentage = parseFloat(data.discount_percentage || 0); // Получаем процент скидки
+                const serverDiscount = (total * serverDiscountPercentage) / 100
+                const serverDiscountCode = data.discount_code || ''; // Получаем код
+                const serverTotalPriceAfterDiscount = total - serverDiscount;
 
-            document.getElementById('discount').textContent = formatPrice(serverDiscount);
-            document.getElementById('discount-percentage').textContent = `${serverDiscountPercentage} %`; // Обновляем процент скидки
-            document.getElementById('coupon-code').value = serverDiscountCode; // Выводим промокод в поле ввода
-            document.getElementById('total-price-after-discount').textContent = formatPrice(serverTotalPriceAfterDiscount);
+                document.getElementById('discount').textContent = formatPrice(serverDiscount);
+                document.getElementById('discount-percentage').textContent = `${serverDiscountPercentage} %`; // Обновляем процент скидки
+                document.getElementById('coupon-code').value = serverDiscountCode; // Выводим промокод в поле ввода
+                document.getElementById('total-price-after-discount').textContent = formatPrice(serverTotalPriceAfterDiscount);
 
-        })
-        .catch(error => console.error('Ошибка при обновлении итогов:', error));
+            })
+            .catch(error => console.error('Ошибка при обновлении итогов:', error));
     }
 
     // Обработка применения промокода
@@ -447,32 +449,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: new FormData(couponForm)  // Отправляем форму
             })
-            .then(response => response.json())
-            .then(data => {
-                couponMessage.textContent = data.message;
-                couponMessage.style.color = data.success ? 'green' : 'red';
+                .then(response => response.json())
+                .then(data => {
+                    couponMessage.textContent = data.message;
+                    couponMessage.style.color = data.success ? 'green' : 'red';
 
-                // Показываем сообщение
-                couponMessage.classList.add('visible');
+                    // Показываем сообщение
+                    couponMessage.classList.add('visible');
 
-                // Скрываем сообщение через 5 секунд
-                setTimeout(() => {
-                    couponMessage.classList.remove('visible');
-                }, 5000);
+                    // Скрываем сообщение через 5 секунд
+                    setTimeout(() => {
+                        couponMessage.classList.remove('visible');
+                    }, 5000);
 
-                if (data.success) {
-                    couponInput.value = data.code; // Обновляем поле с промокодом
-                    const discountPercentage = data.discount_percentage;
-                    document.getElementById('discount-percentage').textContent = `${discountPercentage} %`; // Обновляем процент скидки
-                    calculateTotalPrice();
-                } else {
-                // Если запрос неудачный
-                    couponInput.value = ''; // Очищаем поле с промокодом
-                    document.getElementById('discount-percentage').textContent = '0 %'; // Обновляем процент скидки на 0 %
-                    calculateTotalPrice(); // Пересчитываем итоговую стоимость
-                }
-            })
-            .catch(error => console.error('Ошибка при применении промокода:', error));
+                    if (data.success) {
+                        couponInput.value = data.code; // Обновляем поле с промокодом
+                        const discountPercentage = data.discount_percentage;
+                        document.getElementById('discount-percentage').textContent = `${discountPercentage} %`; // Обновляем процент скидки
+                        calculateTotalPrice();
+                    } else {
+                        // Если запрос неудачный
+                        couponInput.value = ''; // Очищаем поле с промокодом
+                        document.getElementById('discount-percentage').textContent = '0 %'; // Обновляем процент скидки на 0 %
+                        calculateTotalPrice(); // Пересчитываем итоговую стоимость
+                    }
+                })
+                .catch(error => console.error('Ошибка при применении промокода:', error));
         });
     }
 
@@ -485,47 +487,47 @@ document.addEventListener('DOMContentLoaded', function () {
                 'X-CSRFToken': csrfToken
             }
         })
-        .then(response => {
-            if (response.ok) {
-                // Удаляем строку и обновляем корзину только после успешного ответа сервера
-                const row = document.getElementById(`cart-remove-${articleId}`);
-                if (row) {
-                    row.remove();
-                }
-                // Проверяем, остались ли товары
-                const cartRows = document.querySelectorAll('.cart-table-tr');
-                if (cartRows.length === 0) {
-                    // Показать сообщение о пустой корзине
-                    const cartContainer = document.querySelector('.cart-left-container');
-                    const emptyMessage = document.createElement('p');
-                    const cartButton = document.getElementById('cart-button');
-                    const couponButton = document.getElementById('coupon-button');
-                    cartButton.disabled = true;
-                    couponButton.disabled = true;
-                    emptyMessage.classList.add('cart-empty');
-                    emptyMessage.textContent = 'В корзине пока нет товаров';
-                    cartContainer.appendChild(emptyMessage);
+            .then(response => {
+                if (response.ok) {
+                    // Удаляем строку и обновляем корзину только после успешного ответа сервера
+                    const row = document.getElementById(`cart-remove-${articleId}`);
+                    if (row) {
+                        row.remove();
+                    }
+                    // Проверяем, остались ли товары
+                    const cartRows = document.querySelectorAll('.cart-table-tr');
+                    if (cartRows.length === 0) {
+                        // Показать сообщение о пустой корзине
+                        const cartContainer = document.querySelector('.cart-left-container');
+                        const emptyMessage = document.createElement('p');
+                        const cartButton = document.getElementById('cart-button');
+                        const couponButton = document.getElementById('coupon-button');
+                        cartButton.disabled = true;
+                        couponButton.disabled = true;
+                        emptyMessage.classList.add('cart-empty');
+                        emptyMessage.textContent = 'В корзине пока нет товаров';
+                        cartContainer.appendChild(emptyMessage);
 
-                    // Обновляем отображение
-                    document.getElementById('coupon-code').value = ''; // Очищаем поле купона
-                    document.getElementById('discount-percentage').textContent = '0 %'; // Обновляем процент скидки
-                    const couponMessage = document.getElementById('coupon-message');
-                    couponMessage.textContent = 'Промокод неактивен';
-                    couponMessage.style.color = 'red';
-                    couponMessage.classList.add('visible');
+                        // Обновляем отображение
+                        document.getElementById('coupon-code').value = ''; // Очищаем поле купона
+                        document.getElementById('discount-percentage').textContent = '0 %'; // Обновляем процент скидки
+                        const couponMessage = document.getElementById('coupon-message');
+                        couponMessage.textContent = 'Промокод неактивен';
+                        couponMessage.style.color = 'red';
+                        couponMessage.classList.add('visible');
 
-                    // Скрыть сообщение через 5 секунд
-                    setTimeout(() => {
-                        couponMessage.classList.remove('visible');
-                    }, 5000);
+                        // Скрыть сообщение через 5 секунд
+                        setTimeout(() => {
+                            couponMessage.classList.remove('visible');
+                        }, 5000);
+                    }
+                    // Пересчитываем итоговую стоимость
+                    calculateTotalPrice();
+                } else {
+                    console.error('Ошибка при удалении товара из корзины');
                 }
-                // Пересчитываем итоговую стоимость
-                calculateTotalPrice();
-            } else {
-                console.error('Ошибка при удалении товара из корзины');
-            }
-        })
-        .catch(error => console.error('Ошибка сети:', error));
+            })
+            .catch(error => console.error('Ошибка сети:', error));
     }
 
     // Навешиваем обработчик на кнопки удаления
@@ -645,4 +647,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Инициализация при загрузке страницы
     calculateTotalPrice();
 });
+
+
+
+
+
+
+
+
+
 

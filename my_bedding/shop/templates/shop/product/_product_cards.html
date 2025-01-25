@@ -1,0 +1,77 @@
+
+<!-- product/_product_cards.html -->
+{% load static %}{% load shop_tags_filters %}
+{% for p in products %}
+
+	<div class="card-container col-lg-3 col-sm-6 mb-3 m-0 p-0">
+		<div class="card product-card" data-product-id="{{ p.id }}">
+			<div class="product-image">
+				<div class="product-images-slider">
+					{% with p.product_images.all as images %}
+						{% if images %}
+							{% for image in images|slice:":5" %}
+								<a href="{% url 'shop:product_detail' p.category.slug p.id %}"><img class="card-img-top" src="{{ image.image.url }}" alt="">
+								</a>
+							{% endfor %}
+						{% else %}
+							<a href="{% url 'shop:product_detail' p.category.slug p.id %}"><img class="card-img-top" src="{% static 'site/default-product.jpg' %}" alt="Нет картинки">
+							</a>
+						{% endif %}
+					{% endwith %}
+				</div>
+			</div>
+			<div class="card-body product-details">
+				<h4 class="card-title">
+					<a href="{% url 'shop:product_detail' p.category.slug p.id %}">{{ p.title }}</a>
+				</h4>
+				<div class="product-bottom-details">
+					<div class="product-price">
+						{{ p.articles.first.price|format_price }} ₽
+					</div>
+					<div class="product-links">
+						<!-- Здесь форма для добавления в корзину будет динамически обновляться через JS -->
+						{% if p.articles.first %}
+							<div class="product-list-cart-add-container"></div>
+
+							<div class="product-list-favorite-add-container">
+								<!-- Форма избранного остаётся без изменений -->
+								<form hx-post="" hx-trigger="click" hx-swap="none" method="post" class="add-to-favorite-form">
+									{% csrf_token %}
+									<button type="submit" class="add-to-favorite-btn">
+										<img src="https://img.icons8.com/?size=27&id=z3ZIkrQcnQdK&format=png&color=555555" alt="Избранное">
+									</button>
+								</form>
+							</div>
+						{% else %}
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<!-- Скрытая часть карточки -->
+			<div class="card-extra-content">
+				<div class="card-extra-content-product-sizes">
+					<!-- Контейнер для цены и описания -->
+					<div class="product-description">
+						<p id="product-description">
+							{{ p.articles.first.size.description }}</p>
+					</div>
+					<!-- Блок кнопок размеров -->
+					<div class="list-product-sizes">
+						{% with p.articles.all as product_articles %}
+							{% for article in product_articles %}
+								<button type="button" class="btn {% if forloop.first %}active{% endif %}" data-price="{{ article.price }}" data-description="{{ article.size.description }}" data-article="{{ article.article }}" data-in-cart="{% if article.article|stringformat:'s' in cart %}true{% else %}false{% endif %}">
+									{% if article.size.logo %}
+										<img class="product-sizes-logo" src="{{ article.size.logo.url }}" alt="">
+									{% else %}
+										{{ article.size }}
+									{% endif %}
+								</button>
+							{% endfor %}
+						{% endwith %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endfor %}

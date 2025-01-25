@@ -222,6 +222,7 @@ class ProductParam(models.Model):
     product = models.OneToOneField(
         Product,
         on_delete=models.CASCADE,
+        primary_key=True,
         related_name='parameters',
         verbose_name='Товар'
     )
@@ -299,12 +300,12 @@ class ProductImage(models.Model):
         upload_to='products/%Y/%m/%d/',
         verbose_name='Фото'
     )
-    size = models.CharField(
-        max_length=10,
-        choices=(('100x100', '100x100'), ('450x450', '450x450'),
-                 ('800x800', '800x800'), ('1000x1000', '1000x1000')),
-        verbose_name='Размер',
-    )
+    # size = models.CharField(
+    #     max_length=10,
+    #     choices=(('100x100', '100x100'), ('450x450', '450x450'),
+    #              ('1000x1000', '1000x1000')),
+    #     verbose_name='Размер',
+    # )
 
     class Meta:
         verbose_name = 'Фотография товара'

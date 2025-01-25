@@ -21,14 +21,14 @@ def discount_percentage(context):
     return result
 
 
-@register.filter
-def image_size(value, arg=''):
-    """
-    Фильтр для получения фото с нужным разрешением.
-    Использование:
-    {{ p.product_images|image_size:"480x480" }}
-    """
-    return value.filter(size=arg)
+# @register.filter
+# def image_size(value, arg=''):
+#     """
+#     Фильтр для получения фото с нужным разрешением.
+#     Использование:
+#     {{ p.product_images|image_size:"480x480" }}
+#     """
+#     return value.filter(size=arg)
 
 
 @register.filter

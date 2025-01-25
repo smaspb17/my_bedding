@@ -1,159 +1,70 @@
-
 <!-- product/list.html -->
 {% extends 'shop/base.html' %}{% load shop_tags_filters %}{% load static %}
 
 {% block content %}
 
-	{#	{% if category %}#}
-	{#		<h1>Категория: {{ category.title }}</h1>#}
-	{#	{% endif %}#}
-
 	{% if products %}
 		<section class="main-content">
 			<div class="container products">
-				<div class="row">
-					{% for p in products %}
+				<div class="row product-list" id="product-list">
+					{% include 'shop/product/_product_cards.html' with products=products %}
+					<div class="pagination">
+						<ul>
+							{% if products.has_previous %}
+								<li><a href="?page=1">Первая</a></li>
+								<li><a href="?page={{ products.previous_page_number }}">Назад</a></li>
+							{% else %}
+								<li class="disabled">Первая</li>
+								<li class="disabled">Назад</li>
+							{% endif %}
 
-						<div class="card-container col-lg-3 col-sm-6 mb-3 m-0 p-0">
-							<div class="card product-card" data-product-id="{{ p.id }}">
-								<div class="product-image">
-									<div class="product-images-slider">
-										{% with p.product_images|image_size:"450x450" as images %}
-											{% if images %}
-												{% for image in images %}
-													<a href="{% url 'shop:product_detail' p.category.slug p.id %}"><img class="card-img-top" src="{{ image.image.url }}" alt="">
-													</a>
-												{% endfor %}
-											{% else %}
-												<a href="{% url 'shop:product_detail' p.category.slug p.id %}"><img class="card-img-top" src="{% static 'site/default-product.jpg' %}" alt="Нет картинки">
-												</a>
-											{% endif %}
-										{% endwith %}
-									</div>
-								</div>
-								<div class="card-body product-details">
-									<h4 class="card-title">
-										<a href="{% url 'shop:product_detail' p.category.slug p.id %}">{{ p.title }}</a>
-									</h4>
-									<div class="product-bottom-details">
-										<div class="product-price">
-											{{ p.articles.first.price|format_price }} ₽
-										</div>
-										<div class="product-links">
+							{% if products.number > 3 %}
+								<li><a href="?page=1">1</a></li>
+								<li class="disabled"><span>...</span></li>
+							{% endif %}
 
-											<!-- Здесь форма для добавления в корзину будет динамически обновляться через JS -->
-											{% if p.articles.first %}
-												<div class="product-list-cart-add-container">
-{#													{% if p.articles.first.article|stringformat:'s' in cart %}#}
-{#														<a href="{% url 'cart:cart-detail' %}" class="add-to-cart-btn" style="border: none; background: none; padding: 0;">#}
-{#														    <img#}
-{#														        id="cart-icon-{{ article }}"#}
-{#														        src="https://img.icons8.com/?size=27&id=A2wGxDEI4NRh&format=png&color=D8BB76"#}
-{#														        alt="Добавлено в корзину"#}
-{#														        class="cart-icon added"#}
-{#														    >#}
-{#														</a>#}
-{#													{% else %}#}
-{#														<!-- Форма для добавления в корзину -->#}
-{#														<!-- Форма для добавления в корзину -->#}
-{#													    <form#}
-{#													        id="add-to-cart-form-{{ p.articles.first.article }}"#}
-{#													        action="{% url 'cart:cart-add' p.articles.first.article %}"#}
-{#													        method="post"#}
-{#													        class="add-to-cart-form"#}
-{#													    >#}
-{#													        {% csrf_token %}#}
-{#													        <button type="submit" class="add-to-cart-btn" style="border: none; background: none; padding: 0; position: relative;">#}
-{#													            <img#}
-{#													                id="cart-icon-default-{{ p.articles.first.article }}"#}
-{#													                src="https://img.icons8.com/?size=27&id=p3rkypXU5nhr&format=png&color=555555"#}
-{#													                alt="Добавить в корзину"#}
-{#													                class="cart-icon default"#}
-{#													            >#}
-{#													        </button>#}
-{#													    </form>#}
-{##}
-	{#												    <form#}
-	{#													    id="add-to-cart-form-{{ p.articles.first.article }}"#}
-	{#													    data-original-hx-post="{% url 'cart:cart-add' p.articles.first.article %}"#}
-	{#													    hx-post="{% url 'cart:cart-add' p.articles.first.article %}"#}
-	{#													    hx-trigger="click"#}
-	{#													    hx-swap="outerHTML"#}
-	{#													    hx-target="#add-to-cart-form-{{ p.articles.first.article }}"#}
-	{#													    method="post"#}
-	{#													    class="add-to-cart-form"#}
-	{#													>#}
-	{#													    {% csrf_token %}#}
-	{#													    <button type="submit" class="add-to-cart-btn" style="border: none; background: none; padding: 0; position: relative;">#}
-	{#													        <img#}
-	{#													            id="cart-icon-default-{{ p.articles.first.article }}"#}
-	{#													            src="https://img.icons8.com/?size=27&id=p3rkypXU5nhr&format=png&color=555555"#}
-	{#													            alt="Добавить в корзину"#}
-	{#													            class="cart-icon default"#}
-	{#													        >#}
-	{#													    </button>#}
-	{#													</form>#}
-{#													{% endif %}#}
-												</div>
+							{# Отображаем текущую страницу и ±2 страницы #}
+							{% for num in products.paginator.page_range %}
+								{% if num >= products.number|add:'-2' and num <= products.number|add:'2' %}
+									{% if products.number == num %}
+										<li class="active"><span>{{ num }}</span></li>
+									{% else %}
+										<li><a href="?page={{ num }}">{{ num }}</a></li>
+									{% endif %}
+								{% endif %}
+							{% endfor %}
 
-												<div class="product-list-favorite-add-container">
-													<!-- Форма избранного остаётся без изменений -->
-													<form hx-post="" hx-trigger="click" hx-swap="none" method="post" class="add-to-favorite-form">
-														{% csrf_token %}
-														<button type="submit" class="add-to-favorite-btn">
-															<img src="https://img.icons8.com/?size=27&id=z3ZIkrQcnQdK&format=png&color=555555" alt="Избранное">
-														</button>
-													</form>
-												</div>
-											{% else %}
-{#												<a href="#" class="icons-not-article">#}
-{#													<img src="https://img.icons8.com/?size=27&id=p3rkypXU5nhr&format=png&color=555555" alt="">#}
-{#												</a>#}
-{#												<a href="#" class="icons-not-article">#}
-{#													<img src="https://img.icons8.com/?size=27&id=z3ZIkrQcnQdK&format=png&color=555555" alt="">#}
-{#												</a>#}
-											{% endif %}
-										</div>
-									</div>
-								</div>
-								<!-- Скрытая часть карточки -->
-								<div class="card-extra-content">
-									<div class="card-extra-content-product-sizes">
-										<!-- Контейнер для цены и описания -->
-										<div class="product-description">
-											<p id="product-description">
-												{{ p.articles.first.size.description }}</p>
-										</div>
-										<!-- Блок кнопок размеров -->
-										<div class="list-product-sizes">
-											{% with p.articles.all as product_articles %}
-												{% for article in product_articles %}
-													<button
-														type="button"
-														class="btn {% if forloop.first %}active{% endif %}"
-														data-price="{{ article.price }}"
-														data-description="{{ article.size.description }}"
-														data-article="{{ article.article }}"
-														data-in-cart="{% if article.article|stringformat:'s' in cart %}true{% else %}false{% endif %}">
-														{% if article.size.logo %}
-															<img class="product-sizes-logo" src="{{ article.size.logo.url }}" alt="">
-														{% endif %}
-													</button>
-												{% endfor %}
-											{% endwith %}
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+							{% if products.number < products.paginator.num_pages|add:'-2' %}
+								<li class="disabled"><span>...</span></li>
+								<li>
+									<a href="?page={{ products.paginator.num_pages }}">{{ products.paginator.num_pages }}</a>
+								</li>
+							{% endif %}
 
-					{% endfor %}
+							{% if products.has_next %}
+								<li><a href="?page={{ products.next_page_number }}">Вперед</a></li>
+								<li><a href="?page={{ products.paginator.num_pages }}">Последняя</a></li>
+							{% else %}
+								<li class="disabled">Вперед</li>
+								<li class="disabled">Последняя</li>
+							{% endif %}
+						</ul>
+					</div>
+				</div>
+				<!-- Индикатор загрузки (Bootstrap Spinner) -->
+				<div id="loading-spinner" class="text-center my-3" style="display: none;">
+					<div class="spinner-border text-primary" role="status">
+						<span class="visually-hidden">Загрузка...</span>
+					</div>
 				</div>
 			</div>
 		</section>
 
+
 	{% else %}
 		<h1>Уважаемый покупатель! В данной категории нет товаров, но скоро они появятся в продаже! Мы обязательно сообщим вам об этом! Возвращайтесь к нам снова!</h1>
 	{% endif %}
+
+
 
 {% endblock %}

@@ -10,7 +10,7 @@
 						{% with article=item.article product=item.product %}
 							<tr id="cart-remove-{{ article.article }}" class="cart-table-tr">
 								<td class="cart-table-td">
-									{% with product.product_images|image_size:"450x450" as images %}
+									{% with product.product_images.all as images %}
 										<a href="{% url 'shop:product_detail' product.category.slug product.id %}">
 											<img src="{{ images.first.image.url }}" alt="" height="110" width="110"> </a>
 									{% endwith %}

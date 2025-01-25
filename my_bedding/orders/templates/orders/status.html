@@ -51,7 +51,7 @@
 												<tr class="order-table-tr">
 
 													<td class="order-table-td">
-														{% with product.product_images|image_size:"450x450" as images %}
+														{% with product.product_images.all as images %}
 															<a href="{% url 'shop:product_detail' product.category.slug product.id %}">
 																<img src="{{ images.first.image.url }}" alt="" height="90" width="90"> </a>
 															{% endwith %}

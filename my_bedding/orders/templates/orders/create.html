@@ -32,7 +32,7 @@
 															<tr class="order-table-tr">
 
 																<td class="order-table-td">
-																	{% with product.product_images|image_size:"450x450" as images %}
+																	{% with product.product_images.all as images %}
 																		<a href="{% url 'shop:product_detail' product.category.slug product.id %}">
 																			<img src="{{ images.first.image.url }}" alt="" height="90" width="90"> </a>
 																		{% endwith %}
@@ -218,7 +218,6 @@
 						</div>
 
 						<div class="order-final-price-links">
-{#							<input type="hidden" id="user-authenticated" value="{% if user.is_authenticated %}true{% else %}false{% endif %}">#}
 							{% if user.is_authenticated %}
 								<button type="submit" class="order-final-price-place-order" id="order-button">
 									Оформить заказ
@@ -239,6 +238,7 @@
 		</form>
 	</div>
 <script>
+
     function formatSelected(suggestion) {
         if (suggestion.data.postal_code) {
             return suggestion.data.postal_code + ', ' + suggestion.value;
@@ -363,45 +363,6 @@
 	        }
 	});
 </script>
-{#<script>#}
-{#	document.getElementById('order-button').addEventListener('click', function(event) {#}
-	    {#event.preventDefault(); // Отключить стандартную отправку формы#}
-{##}
-{#	    const form = document.querySelector('.order-styled-form');#}
-{#	    const formData = new FormData(form);#}
-{##}
-{#	    fetch(form.action, {#}
-{#	        method: 'POST',#}
-{#	        body: formData,#}
-{#	        headers: {#}
-{#	            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value#}
-{#	        }#}
-{#	    })#}
-{#	    .then(response => {#}
-{#	        if (response.status === 401) {#}
-{#	            // Если пользователь не аутентифицирован, показываем модальное окно#}
-{#	            document.getElementById('authModal').style.display = 'flex';#}
-{#	        }#}
-{#	    })#}
-{#	    .catch(error => {#}
-{#	        console.error('Ошибка обработки fetch-запроса у заказа:', error);#}
-{#	    });#}
-{#	});#}
-{#</script>#}
-
-{#<script>#}
-{#    document.addEventListener('DOMContentLoaded', function () {#}
-{#        // Находим все элементы с ошибками#}
-{#        const errorElements = document.querySelectorAll('.form-errors, .error-message');#}
-{##}
-{#        // Устанавливаем таймер для скрытия ошибок#}
-{#        errorElements.forEach(function (element) {#}
-{#            setTimeout(function () {#}
-{#                element.classList.add('fade-out');#}
-{#            }, 10000); // 10 секунд#}
-{#        });#}
-{#    });#}
-{#</script>#}
 {% endblock %}
 
 

@@ -165,3 +165,8 @@ media
 !*/migrations/__init__.py
 migrations/
 
+/my_bedding/cert.crt
+/my_bedding/cert.key
+/my_bedding/payment/stripe.exe
+/my_bedding/stripe.exe
+/my_bedding/fixtures/products.json
